@@ -7,7 +7,7 @@ import os
 
 
 def command_name():
-    return "Quick export.TempExport"
+    return "Quick export.Temp Exporter"
 
 
 def get_export_path():

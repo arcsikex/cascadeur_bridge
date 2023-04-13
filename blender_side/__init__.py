@@ -11,43 +11,44 @@ bl_info = {
 }
 
 import bpy
-import os
-import platform
+
 import socket
 import select
-import subprocess
+
+from .utils import csc_handling, file_handling
 
 
-def get_default_casc_path():
-    default_csc_path = {
-        "Windows": r"C:\Program Files\Cascadeur\cascadeur.exe",
-    }
-    return default_csc_path.get(platform.system(), None)
+def import_fbx(file_path: str) -> list:
+    """Import an FBX file into the current Blender scene."""
+
+    # Set import settings
+    bpy.ops.import_scene.fbx(
+        filepath=file_path,
+        use_anim=True,  # Don't import animations
+        use_image_search=True,  # Try to locate missing images
+        force_connect_children=False,  # Don't parent objects to armature bones
+        automatic_bone_orientation=False,  # Don't automatically orient bones
+        use_prepost_rot=False,  # Don't apply pre/post rotation
+        ignore_leaf_bones=True,  # Ignore leaf bones (not parented)
+        primary_bone_axis="Y",  # Set the primary bone axis to Y
+        secondary_bone_axis="X",  # Set the secondary bone axis to X
+        global_scale=1.0,
+        use_manual_orientation=False,
+        axis_forward="-Z",
+        axis_up="Y",
+    )
+    # Return the list of imported objects
 
 
-def file_exists(file_path: str) -> bool:
-    return os.path.exists(file_path) and os.path.isfile(file_path)
-
-
-def delete_file(file_path):
-    if file_exists(file_path):
-        os.remove(file_path)
-        print(f"{file_path} has been deleted.")
-    else:
-        print(f"{file_path} does not exist.")
-
-
-def execut_csc_command(csc_path: str, command: str) -> None:
-    subprocess.call([csc_path, command])
-
-
-class MyAddonPreferences(bpy.types.AddonPreferences):
+class CT_preferences(bpy.types.AddonPreferences):
     bl_idname = __name__
+
+    _csc_path = csc_handling.get_default_csc_path()
 
     csc_exe_path: bpy.props.StringProperty(
         name="File Path",
         subtype="FILE_PATH",
-        default=get_default_casc_path() if file_exists(get_default_casc_path()) else "",
+        default=_csc_path if file_handling.file_exists(_csc_path) else "",
     )
 
     def draw(self, context):
@@ -56,11 +57,11 @@ class MyAddonPreferences(bpy.types.AddonPreferences):
         layout.prop(self, "csc_exe_path")
 
 
-class StartServerOperator(bpy.types.Operator):
+class CT_OT_get_animamtion_from_cascadeur(bpy.types.Operator):
     """Start Socket Server"""
 
     bl_idname = "object.start_server"
-    bl_label = "Start Server"
+    bl_label = "Get Animation From Cascadeur"
 
     _server_socket = None
     _socket_list = []
@@ -83,7 +84,8 @@ class StartServerOperator(bpy.types.Operator):
                     exported_file = data.decode()
                     print("Received:", exported_file)
                     sock.sendall(b"File path recieved by Blender")
-                    delete_file(exported_file)
+                    import_fbx(exported_file)
+                    file_handling.delete_file(exported_file)
                     return {"FINISHED"}
                 else:
                     sock.close()
@@ -96,7 +98,7 @@ class StartServerOperator(bpy.types.Operator):
         preferences = context.preferences
         addon_prefs = preferences.addons[__name__].preferences
         addon_prefs.csc_exe_path
-        execut_csc_command(
+        csc_handling.execut_csc_command(
             addon_prefs.csc_exe_path, "commands.quick_export.temp_export.py"
         )
 
@@ -117,10 +119,10 @@ class StartServerOperator(bpy.types.Operator):
 
 
 def register():
-    bpy.utils.register_class(MyAddonPreferences)
-    bpy.utils.register_class(StartServerOperator)
+    bpy.utils.register_class(CT_preferences)
+    bpy.utils.register_class(CT_OT_get_animamtion_from_cascadeur)
 
 
 def unregister():
-    bpy.utils.unregister_class(MyAddonPreferences)
-    bpy.utils.unregister_class(StartServerOperator)
+    bpy.utils.unregister_class(CT_preferences)
+    bpy.utils.unregister_class(CT_OT_get_animamtion_from_cascadeur)
