@@ -5,9 +5,9 @@ bl_info = {
     "blender": (3, 5, 0),
     "location": "View3D > Panels > csc2blend",
     "description": "Helps you import animations from Cascadeur",
-    "warning": "",
-    "doc_url": "",
-    "category": "3D View",
+    "doc_url": "https://github.com/arcsikex/cacs-to-blender",
+    "tracker_url": "https://github.com/arcsikex/cacs-to-blender/issues",
+    "category": "Animation",
 }
 
 import bpy
@@ -15,30 +15,36 @@ import os
 import platform
 import socket
 import select
+import subprocess
 
 
 def get_default_casc_path():
     default_csc_path = {
         "Windows": r"C:\Program Files\Cascadeur\cascadeur.exe",
-        "Linux": "/default/linux/path",
     }
     return default_csc_path.get(platform.system(), None)
 
 
-def file_exists(file_path):
+def file_exists(file_path: str) -> bool:
     return os.path.exists(file_path) and os.path.isfile(file_path)
 
 
-class MyAddonPreferences(bpy.types.AddonPreferences):
-    """
-    preferences = context.preferences
-    addon_prefs = preferences.addons[__name__].preferences
-    addon_prefs.my_file_path
-    """
+def delete_file(file_path):
+    if file_exists(file_path):
+        os.remove(file_path)
+        print(f"{file_path} has been deleted.")
+    else:
+        print(f"{file_path} does not exist.")
 
+
+def execut_csc_command(csc_path: str, command: str) -> None:
+    subprocess.call([csc_path, command])
+
+
+class MyAddonPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
-    my_file_path: bpy.props.StringProperty(
+    csc_exe_path: bpy.props.StringProperty(
         name="File Path",
         subtype="FILE_PATH",
         default=get_default_casc_path() if file_exists(get_default_casc_path()) else "",
@@ -47,7 +53,7 @@ class MyAddonPreferences(bpy.types.AddonPreferences):
     def draw(self, context):
         layout = self.layout
         layout.label(text="Cascadeur Executable path:")
-        layout.prop(self, "my_file_path")
+        layout.prop(self, "csc_exe_path")
 
 
 class StartServerOperator(bpy.types.Operator):
@@ -74,9 +80,10 @@ class StartServerOperator(bpy.types.Operator):
             else:
                 data = sock.recv(self._buffer_size)
                 if data:
-                    print("Received:", data.decode())
-                    sock.sendall(b"ACK")
-
+                    exported_file = data.decode()
+                    print("Received:", exported_file)
+                    sock.sendall(b"File path recieved by Blender")
+                    delete_file(exported_file)
                     return {"FINISHED"}
                 else:
                     sock.close()
@@ -85,6 +92,15 @@ class StartServerOperator(bpy.types.Operator):
         return {"RUNNING_MODAL"}
 
     def execute(self, context):
+        # Send command to Cascadeur
+        preferences = context.preferences
+        addon_prefs = preferences.addons[__name__].preferences
+        addon_prefs.csc_exe_path
+        execut_csc_command(
+            addon_prefs.csc_exe_path, "commands.quick_export.temp_export.py"
+        )
+
+        # Start Server
         self._server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self._server_socket.bind(("localhost", 12345))
