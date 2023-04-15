@@ -1,13 +1,11 @@
 import bpy
+from .main_panel import PanelBasics
 
 
-class WS_PT_Workspaces_Info_Panel(bpy.types.Panel):
-    bl_idname = "WS_PT_Workspaces_Info_Panel"
+class WS_PT_csc_tools_info(PanelBasics, bpy.types.Panel):
+    bl_idname = "CT_PT_csc_tools_info"
     bl_label = "Information"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "Workspaces"
-    bl_parent_id = "WS_PT_Parent_Panel"
+    bl_parent_id = "CT_PT_parent"
 
     def draw_header(self, context):
         self.layout.label(text="", icon="INFO")
@@ -18,7 +16,7 @@ class WS_PT_Workspaces_Info_Panel(bpy.types.Panel):
         # Operations Layout
         box = layout.box()
         column = box.column()
-        column.label(text="Created by Curtis Holt")
+        column.label(text="Created by Aron Nemeth")
 
         # ---------- Box - Social
         b = box.box()

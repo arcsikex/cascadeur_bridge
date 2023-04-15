@@ -12,10 +12,12 @@ bl_info = {
 
 if "bpy" not in locals():
     from . import operators
+    from . import ui
 else:
     import importlib
 
     importlib.reload(operators)
+    importlib.reload(ui)
 
 import bpy
 
@@ -24,7 +26,7 @@ from .utils import csc_handling, file_handling
 
 
 class CT_preferences(bpy.types.AddonPreferences):
-    bl_idname = __package__
+    bl_idname = __name__
 
     _csc_path = csc_handling.get_default_csc_path()
 
@@ -40,7 +42,7 @@ class CT_preferences(bpy.types.AddonPreferences):
         layout.prop(self, "csc_exe_path")
 
 
-classes = [CT_preferences] + operators.classes
+classes = [CT_preferences] + operators.classes + ui.classes
 
 
 def register():
