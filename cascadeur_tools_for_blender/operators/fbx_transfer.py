@@ -56,7 +56,7 @@ class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
     bl_label = "Import Cascadeur Scene"
 
     def execute(self, context):
-        csc_handling.execute_csc_command("commands.quick_export.temp_export.py")
+        csc_handling.execute_csc_command("commands.external.temp_export.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
         if data:
@@ -84,7 +84,7 @@ class CT_OT_import_action_to_selected(bpy.types.Operator):
 
     def execute(self, context):
         ao = bpy.context.active_object
-        csc_handling.execute_csc_command("commands.quick_export.temp_export.py")
+        csc_handling.execute_csc_command("commands.external.temp_export.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
         if data:
