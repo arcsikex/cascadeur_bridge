@@ -49,20 +49,11 @@ def apply_action(armature, actions: list):
         armature.animation_data.action = actions[0]
 
 
-"""
-imported_objects = import_fbx(recieved_data)
-actions = get_action_from_objects(imported_objects)
-apply_action(self._active_object, actions)
-delete_objects(imported_objects)
-file_handling.delete_file(recieved_data)
-"""
-
-
 class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
     """Imports the currently opened Cascadeur scene"""
 
     bl_idname = "ct.import_cascadeur_fbx"
-    bl_label = "Import Scene"
+    bl_label = "Import Cascadeur Scene"
 
     def execute(self, context):
         csc_handling.execute_csc_command("commands.quick_export.temp_export.py")
@@ -74,4 +65,37 @@ class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
             reciever.recieved_data = None
         else:
             return {"CANCELLED"}
+        return {"FINISHED"}
+
+
+class CT_OT_import_action_to_selected(bpy.types.Operator):
+    """Imports the action from Cascadeur and apply to selected armature"""
+
+    bl_idname = "ct.import_cascadeur_action"
+    bl_label = "Import Cascadeur Action"
+
+    @classmethod
+    def poll(cls, context):
+        return (
+            context.active_object
+            and context.selected_objects
+            and context.active_object.type == "ARMATURE"
+        )
+
+    def execute(self, context):
+        ao = bpy.context.active_object
+        csc_handling.execute_csc_command("commands.quick_export.temp_export.py")
+        bpy.ops.ct.start_server()
+        data = reciever.recieved_data
+        if data:
+            imported_objects = import_fbx(data)
+            file_handling.delete_file(data)
+            reciever.recieved_data = None
+        else:
+            print("No data recieved")
+            return {"CANCELLED"}
+
+        actions = get_action_from_objects(imported_objects)
+        apply_action(ao, actions)
+        delete_objects(imported_objects)
         return {"FINISHED"}

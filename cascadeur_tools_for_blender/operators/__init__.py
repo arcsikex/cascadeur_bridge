@@ -9,4 +9,8 @@ else:
 
 import bpy
 
-classes = [reciever.CT_OT_start_server, fbx_transfer.CT_OT_import_cascadeur_fbx]
+classes = [
+    reciever.CT_OT_start_server,
+    fbx_transfer.CT_OT_import_cascadeur_fbx,
+    fbx_transfer.CT_OT_import_action_to_selected,
+]

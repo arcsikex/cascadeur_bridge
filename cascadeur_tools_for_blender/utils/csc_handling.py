@@ -13,6 +13,6 @@ def get_default_csc_path():
 
 def execute_csc_command(command: str) -> None:
     preferences = bpy.context.preferences
-    addon_prefs = preferences.addons["blender_side"].preferences
+    addon_prefs = preferences.addons["cascadeur_tools_for_blender"].preferences
 
     subprocess.call([addon_prefs.csc_exe_path, command])

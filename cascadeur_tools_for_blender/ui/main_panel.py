@@ -25,14 +25,22 @@ class WS_PT_csc_to_blender(PanelBasics, bpy.types.Panel):
     bl_label = "Cascadeur -> Blender"
     bl_parent_id = "CT_PT_parent"
 
+    """
     def draw_header(self, context):
         self.layout.label(text="", icon="")
+    """
 
     def draw(self, context):
         layout = self.layout
-        col = self.layout.column(align=True)
+        col = layout.column(align=True)
 
         # Operations Layout
+        col.operator(
+            "ct.import_cascadeur_action",
+            text="Import Action",
+            icon="IMPORT",
+        )
+
         col.operator(
             "ct.import_cascadeur_fbx",
             text="Import Scene",
