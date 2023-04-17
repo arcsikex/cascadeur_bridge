@@ -36,4 +36,4 @@ def is_csc_path_set() -> bool:
 def start_cascadeur() -> None:
     csc_path = get_csc_path_preference()
     if is_csc_path_set():
-        subprocess.call([csc_path])
+        subprocess.Popen([csc_path])
