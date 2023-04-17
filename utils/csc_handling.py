@@ -15,21 +15,16 @@ def get_default_csc_path():
 
 def get_csc_path_preference() -> str:
     preferences = bpy.context.preferences
-    addon_prefs = preferences.addons["cascadeur_tools_for_blender"].preferences
+    addon_prefs = preferences.addons["cascadeur_bridge"].preferences
     return addon_prefs.csc_exe_path
 
 
 def execute_csc_command(command: str) -> None:
-    preferences = bpy.context.preferences
-    addon_prefs = preferences.addons["cascadeur_tools_for_blender"].preferences
-
-    subprocess.call([addon_prefs.csc_exe_path, command])
+    subprocess.call([get_csc_path_preference(), command])
 
 
 def is_csc_path_set() -> bool:
-    preferences = bpy.context.preferences
-    addon_prefs = preferences.addons["cascadeur_tools_for_blender"].preferences
-    csc_path = addon_prefs.csc_exe_path
+    csc_path = get_csc_path_preference()
     return True if csc_path and file_handling.file_exists(csc_path) else False
 
 
