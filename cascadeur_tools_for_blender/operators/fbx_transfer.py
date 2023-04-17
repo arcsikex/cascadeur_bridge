@@ -1,4 +1,5 @@
 import bpy
+import subprocess
 
 from ..utils import file_handling, csc_handling
 from . import reciever
@@ -25,7 +26,7 @@ def import_fbx(file_path: str) -> list:
     return bpy.context.selected_objects
 
 
-def get_action_from_objects(selected_objects: list):
+def get_actions_from_objects(selected_objects: list):
     actions = []
     for obj in selected_objects:
         if obj.type == "ARMATURE":
@@ -95,7 +96,23 @@ class CT_OT_import_action_to_selected(bpy.types.Operator):
             print("No data recieved")
             return {"CANCELLED"}
 
-        actions = get_action_from_objects(imported_objects)
+        actions = get_actions_from_objects(imported_objects)
         apply_action(ao, actions)
         delete_objects(imported_objects)
+        return {"FINISHED"}
+
+
+# Should be moved to a different place
+class CT_OT_start_cascadeur(bpy.types.Operator):
+    """Start Cascadeur"""
+
+    bl_idname = "ct.start_cascadeur"
+    bl_label = "Start Cascadeur"
+
+    @classmethod
+    def poll(cls, context):
+        return csc_handling.get_csc_path_preference()
+
+    def execute(self, context):
+        csc_handling.start_cascadeur()
         return {"FINISHED"}
