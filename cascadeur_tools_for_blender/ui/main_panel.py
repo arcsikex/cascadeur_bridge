@@ -16,13 +16,11 @@ class WS_PT_parent_panel(PanelBasics, bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        scene = context.scene
-        ws_tool = scene.ws_tool
         col = layout.column(align=True)
         col.operator(
             "ct.start_cascadeur",
             text="Start Cascadeur",
-            icon="IMPORT",
+            icon="MESH_UVSPHERE",
         )
 
 
