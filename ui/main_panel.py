@@ -1,4 +1,5 @@
 import bpy
+from ..utils.csc_handling import CascadeurHandler
 
 
 class PanelBasics:
@@ -16,7 +17,12 @@ class WS_PT_parent_panel(PanelBasics, bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        col = layout.column(align=True)
+        col = layout.column(align=False)
+        if not CascadeurHandler().is_csc_exe_path_valid:
+            col.label(
+                icon="ERROR", text="Set a valid Cascadeur exe path in preferences!"
+            )
+            col.separator()
         col.operator(
             "ct.start_cascadeur",
             text="Start Cascadeur",
