@@ -1,4 +1,5 @@
 import bpy
+import time
 
 from ..utils import file_handling
 from ..utils.csc_handling import CascadeurHandler
@@ -57,11 +58,12 @@ class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
     bl_label = "Import Cascadeur Scene"
 
     def execute(self, context):
-        CascadeurHandler().execute_csc_command("commands.external.temp_export.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
-
-        if data and file_handling.wait_for_file(data):
+        time.sleep(2)
+        if data:
+            file_handling.wait_for_file(data)
             import_fbx(data)
             file_handling.delete_file(data)
             reciever.recieved_data = None
@@ -86,10 +88,12 @@ class CT_OT_import_action_to_selected(bpy.types.Operator):
 
     def execute(self, context):
         ao = bpy.context.active_object
-        CascadeurHandler().execute_csc_command("commands.external.temp_export.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
-        if data and file_handling.wait_for_file(data):
+        time.sleep(2)
+        if data:
+            file_handling.wait_for_file(data)
             imported_objects = import_fbx(data)
             file_handling.delete_file(data)
             reciever.recieved_data = None
