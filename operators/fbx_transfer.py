@@ -60,7 +60,8 @@ class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
         CascadeurHandler().execute_csc_command("commands.external.temp_export.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
-        if data:
+
+        if data and file_handling.wait_for_file(data):
             import_fbx(data)
             file_handling.delete_file(data)
             reciever.recieved_data = None
@@ -88,7 +89,7 @@ class CT_OT_import_action_to_selected(bpy.types.Operator):
         CascadeurHandler().execute_csc_command("commands.external.temp_export.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
-        if data:
+        if data and file_handling.wait_for_file(data):
             imported_objects = import_fbx(data)
             file_handling.delete_file(data)
             reciever.recieved_data = None
