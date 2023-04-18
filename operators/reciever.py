@@ -3,8 +3,6 @@ import bpy
 import socket
 import select
 
-from ..utils import file_handling, csc_handling
-
 global recieved_data
 recieved_data = None
 

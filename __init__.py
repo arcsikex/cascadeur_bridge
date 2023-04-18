@@ -22,18 +22,19 @@ else:
 import bpy
 
 
-from .utils import csc_handling, file_handling
+from .utils.csc_handling import CascadeurHandler
 
 
 class CT_preferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
-    _csc_path = csc_handling.get_default_csc_path()
+    csc_handler = CascadeurHandler()
+    csc_path = csc_handler.default_csc_exe_path
 
     csc_exe_path: bpy.props.StringProperty(
         name="File Path",
         subtype="FILE_PATH",
-        default=_csc_path if file_handling.file_exists(_csc_path) else "",
+        default=csc_path,
     )
 
     def draw(self, context):

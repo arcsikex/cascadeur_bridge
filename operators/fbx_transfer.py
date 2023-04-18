@@ -1,7 +1,7 @@
 import bpy
-import subprocess
 
-from ..utils import file_handling, csc_handling
+from ..utils import file_handling
+from ..utils.csc_handling import CascadeurHandler
 from . import reciever
 
 
@@ -57,7 +57,7 @@ class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
     bl_label = "Import Cascadeur Scene"
 
     def execute(self, context):
-        csc_handling.execute_csc_command("commands.external.temp_export.py")
+        CascadeurHandler().execute_csc_command("commands.external.temp_export.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
         if data:
@@ -85,7 +85,7 @@ class CT_OT_import_action_to_selected(bpy.types.Operator):
 
     def execute(self, context):
         ao = bpy.context.active_object
-        csc_handling.execute_csc_command("commands.external.temp_export.py")
+        CascadeurHandler().execute_csc_command("commands.external.temp_export.py")
         bpy.ops.ct.start_server()
         data = reciever.recieved_data
         if data:
@@ -111,8 +111,8 @@ class CT_OT_start_cascadeur(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return csc_handling.get_csc_path_preference()
+        return CascadeurHandler().is_csc_exe_path_valid
 
     def execute(self, context):
-        csc_handling.start_cascadeur()
+        CascadeurHandler().start_cascadeur()
         return {"FINISHED"}
