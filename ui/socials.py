@@ -30,4 +30,4 @@ class WS_PT_csc_tools_info(PanelBasics, bpy.types.Panel):
         ).url = "https://www.youtube.com/c/AronNemeth95"
         row.operator(
             "wm.url_open", text="GitHub", icon="SCRIPT"
-        ).url = "https://github.com/arcsikex/cacs-to-blender"
+        ).url = "https://github.com/arcsikex/cascadeur_bridge"

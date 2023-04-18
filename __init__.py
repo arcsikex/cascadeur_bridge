@@ -5,8 +5,8 @@ bl_info = {
     "blender": (3, 5, 0),
     "location": "View3D > Panels > csc2blend",
     "description": "Helps you import animations from Cascadeur",
-    "doc_url": "https://github.com/arcsikex/cacs-to-blender",
-    "tracker_url": "https://github.com/arcsikex/cacs-to-blender/issues",
+    "doc_url": "https://github.com/arcsikex/cascadeur_bridge",
+    "tracker_url": "https://github.com/arcsikex/cascadeur_bridge/issues",
     "category": "Animation",
 }
 
@@ -20,6 +20,7 @@ else:
     importlib.reload(ui)
 
 import bpy
+import platform
 
 
 from .utils.csc_handling import CascadeurHandler
@@ -28,13 +29,17 @@ from .utils.csc_handling import CascadeurHandler
 class CT_preferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
-    csc_handler = CascadeurHandler()
-    csc_path = csc_handler.default_csc_exe_path
+    @staticmethod
+    def default_csc_exe_path() -> str:
+        csc_path = {
+            "Windows": r"C:\Program Files\Cascadeur\cascadeur.exe",
+        }
+        return csc_path.get(platform.system(), "")
 
     csc_exe_path: bpy.props.StringProperty(
         name="File Path",
         subtype="FILE_PATH",
-        default=csc_path,
+        default=default_csc_exe_path(),
     )
 
     def draw(self, context):

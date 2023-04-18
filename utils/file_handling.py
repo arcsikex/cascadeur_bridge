@@ -1,5 +1,6 @@
 import os
 import time
+from .csc_handling import CascadeurHandler
 
 
 def file_exists(file_path: str) -> bool:
@@ -24,3 +25,29 @@ def wait_for_file(file_path: str, timeout: int = 60) -> bool:
         else:
             time.sleep(1)
     return export_finished
+
+
+def commands_installed() -> bool:
+    _ch = CascadeurHandler()
+    required_commands = [
+        os.path.join(_ch.commands_path, "externals", "__init__.py"),
+        os.path.join(_ch.commands_path, "externals", "temp_exporter.py"),
+    ]
+    for file in required_commands:
+        if not file_exists(file):
+            return False
+    else:
+        return True
+
+
+def pyds_installed() -> bool:
+    _ch = CascadeurHandler()
+    required_pyds = [
+        os.path.join(_ch.csc_dir, "python", "DLLs", "_socket.pyd"),
+        os.path.join(_ch.csc_dir, "python", "DLLs", "select.pyd"),
+    ]
+    for file in required_pyds:
+        if not file_exists(file):
+            return False
+    else:
+        return True
