@@ -51,15 +51,15 @@ def apply_action(armature, actions: list):
         armature.animation_data.action = actions[0]
 
 
-class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
+class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     """Imports the currently opened Cascadeur scene"""
 
-    bl_idname = "ct.import_cascadeur_fbx"
+    bl_idname = "cbb.import_cascadeur_fbx"
     bl_label = "Import Cascadeur Scene"
 
     def execute(self, context):
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
-        bpy.ops.ct.start_server()
+        bpy.ops.cbb.start_server()
         data = reciever.recieved_data
         time.sleep(2)
         if data:
@@ -72,10 +72,10 @@ class CT_OT_import_cascadeur_fbx(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class CT_OT_import_action_to_selected(bpy.types.Operator):
+class CBB_OT_import_action_to_selected(bpy.types.Operator):
     """Imports the action from Cascadeur and apply to selected armature"""
 
-    bl_idname = "ct.import_cascadeur_action"
+    bl_idname = "cbb.import_cascadeur_action"
     bl_label = "Import Cascadeur Action"
 
     @classmethod
@@ -89,7 +89,7 @@ class CT_OT_import_action_to_selected(bpy.types.Operator):
     def execute(self, context):
         ao = bpy.context.active_object
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
-        bpy.ops.ct.start_server()
+        bpy.ops.cbb.start_server()
         data = reciever.recieved_data
         time.sleep(2)
         if data:
@@ -108,10 +108,10 @@ class CT_OT_import_action_to_selected(bpy.types.Operator):
 
 
 # Should be moved to a different place
-class CT_OT_start_cascadeur(bpy.types.Operator):
+class CBB_OT_start_cascadeur(bpy.types.Operator):
     """Start Cascadeur"""
 
-    bl_idname = "ct.start_cascadeur"
+    bl_idname = "cbb.start_cascadeur"
     bl_label = "Start Cascadeur"
 
     @classmethod

@@ -6,12 +6,12 @@ from ..utils import file_handling
 class PanelBasics:
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_category = "CSC Tools"
+    bl_category = "CSC Bridge"
 
 
-class WS_PT_parent_panel(PanelBasics, bpy.types.Panel):
-    bl_idname = "CT_PT_parent"
-    bl_label = "Cascadeur Tools"
+class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
+    bl_idname = "CBB_PT_parent"
+    bl_label = "Cascadeur Bridge"
 
     def draw_header(self, context):
         self.layout.label(text="", icon="MODIFIER_DATA")
@@ -31,16 +31,16 @@ class WS_PT_parent_panel(PanelBasics, bpy.types.Panel):
             col.separator()
 
         col.operator(
-            "ct.start_cascadeur",
+            "cbb.start_cascadeur",
             text="Start Cascadeur",
             icon="MESH_UVSPHERE",
         )
 
 
-class WS_PT_csc_to_blender(PanelBasics, bpy.types.Panel):
-    bl_idname = "CT_PT_csc_to_blender"
+class CBB_PT_csc_to_blender(PanelBasics, bpy.types.Panel):
+    bl_idname = "CBB_PT_csc_to_blender"
     bl_label = "Cascadeur -> Blender"
-    bl_parent_id = "CT_PT_parent"
+    bl_parent_id = "CBB_PT_parent"
 
     """
     def draw_header(self, context):
@@ -53,13 +53,13 @@ class WS_PT_csc_to_blender(PanelBasics, bpy.types.Panel):
 
         # Operations Layout
         col.operator(
-            "ct.import_cascadeur_action",
+            "cbb.import_cascadeur_action",
             text="Import Action",
             icon="IMPORT",
         )
 
         col.operator(
-            "ct.import_cascadeur_fbx",
+            "cbb.import_cascadeur_fbx",
             text="Import Scene",
             icon="IMPORT",
         )
