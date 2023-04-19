@@ -29,12 +29,14 @@ def wait_for_file(file_path: str, timeout: int = 60) -> bool:
 
 def commands_installed() -> bool:
     _ch = CascadeurHandler()
-    required_commands = [
-        os.path.join(_ch.commands_path, "externals", "__init__.py"),
-        os.path.join(_ch.commands_path, "externals", "temp_exporter.py"),
+    base_path = os.path.join(_ch.commands_path, "externals")
+    required_files = [
+        "__init__.py",
+        "temp_exporter.py",
     ]
-    for file in required_commands:
-        if not file_exists(file):
+    for file in required_files:
+        full_path = os.path.join(base_path, file)
+        if not file_exists(full_path):
             return False
     else:
         return True
@@ -42,12 +44,14 @@ def commands_installed() -> bool:
 
 def pyds_installed() -> bool:
     _ch = CascadeurHandler()
-    required_pyds = [
-        os.path.join(_ch.csc_dir, "python", "DLLs", "_socket.pyd"),
-        os.path.join(_ch.csc_dir, "python", "DLLs", "select.pyd"),
+    base_path = os.path.join(_ch.csc_dir, "python", "DLLs")
+    required_files = [
+        "_socket.pyd",
+        "select.pyd",
     ]
-    for file in required_pyds:
-        if not file_exists(file):
+    for file in required_files:
+        full_path = os.path.join(base_path, file)
+        if not file_exists(full_path):
             return False
     else:
         return True
