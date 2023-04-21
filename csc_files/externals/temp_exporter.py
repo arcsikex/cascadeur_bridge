@@ -46,6 +46,8 @@ def run(scene):
         .get_fbx_loader(scene_pr)
     )
     export_path = get_export_path()
+    # https://cascadeur.com/python-api/csc.html#csc.fbx.FbxSettings
+    # https://cascadeur.com/python-api/csc.html#csc.fbx.FbxLoader
     fbx_scene_loader.export_all_objects(export_path)
     scene.info(f"File exported to {export_path}")
     send_file_path(export_path)
