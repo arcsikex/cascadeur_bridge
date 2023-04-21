@@ -7,10 +7,10 @@ global recieved_data
 recieved_data = None
 
 
-class CT_OT_start_server(bpy.types.Operator):
+class CBB_OT_start_server(bpy.types.Operator):
     """Start Socket Server"""
 
-    bl_idname = "ct.start_server"
+    bl_idname = "cbb.start_server"
     bl_label = "Get Animation From Cascadeur"
 
     _server_socket = None

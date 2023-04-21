@@ -1,10 +1,10 @@
 bl_info = {
-    "name": "Cascadeur to Blender",
+    "name": "Cascadeur Bridge for Blender",
     "author": "Aron Nemeth",
     "version": (0, 1),
     "blender": (3, 5, 0),
-    "location": "View3D > Panels > csc2blend",
-    "description": "Helps you import animations from Cascadeur",
+    "location": "View3D > Panels > CSC Bridge",
+    "description": "Helps you to integrate Cascadeur to your workflow with Belnder.",
     "doc_url": "https://github.com/arcsikex/cascadeur_bridge",
     "tracker_url": "https://github.com/arcsikex/cascadeur_bridge/issues",
     "category": "Animation",
@@ -23,10 +23,7 @@ import bpy
 import platform
 
 
-from .utils.csc_handling import CascadeurHandler
-
-
-class CT_preferences(bpy.types.AddonPreferences):
+class CBB_preferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
     @staticmethod
@@ -48,7 +45,7 @@ class CT_preferences(bpy.types.AddonPreferences):
         layout.prop(self, "csc_exe_path")
 
 
-classes = [CT_preferences] + operators.classes + ui.classes
+classes = [CBB_preferences] + operators.classes + ui.classes
 
 
 def register():

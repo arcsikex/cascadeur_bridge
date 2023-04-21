@@ -10,7 +10,7 @@ else:
 import bpy
 
 classes = [
-    main_panel.WS_PT_parent_panel,
-    main_panel.WS_PT_csc_to_blender,
-    socials.WS_PT_csc_tools_info,
+    main_panel.CBB_PT_parent_panel,
+    main_panel.CBB_PT_csc_to_blender,
+    socials.CBB_PT_csc_bridge_info,
 ]

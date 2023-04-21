@@ -7,11 +7,9 @@ else:
     importlib.reload(fbx_transfer)
     importlib.reload(reciever)
 
-import bpy
-
 classes = [
-    reciever.CT_OT_start_server,
-    fbx_transfer.CT_OT_import_cascadeur_fbx,
-    fbx_transfer.CT_OT_import_action_to_selected,
-    fbx_transfer.CT_OT_start_cascadeur,
+    reciever.CBB_OT_start_server,
+    fbx_transfer.CBB_OT_import_cascadeur_fbx,
+    fbx_transfer.CBB_OT_import_action_to_selected,
+    fbx_transfer.CBB_OT_start_cascadeur,
 ]
