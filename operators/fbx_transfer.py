@@ -66,20 +66,23 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
         self.server_socket.run()
 
-        data = self.server_socket.receive_message()
-        if data:
-            print(str(data))
-            file_handling.wait_for_file(data)
-            import_fbx(data)
-            file_handling.delete_file(data)
-            return {"FINISHED"}
+        if self.server_socket.client_socket:
+            data = self.server_socket.receive_message()
+            if data:
+                print(str(data))
+                file_handling.wait_for_file(data)
+                import_fbx(data)
+                file_handling.delete_file(data)
+                return {"FINISHED"}
+        else:
+            # Report warning!
+            pass
 
         return {"PASS_THROUGH"}
 
     def execute(self, context):
         self.server_socket = ServerSocket()
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
-
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
