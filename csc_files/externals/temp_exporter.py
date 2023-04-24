@@ -32,7 +32,7 @@ def run(scene):
     fbx_scene_loader.export_all_objects(export_path)
     scene.info(f"File exported to {export_path}")
     client = ClientSocket()
-    client.send_message()
+    client.send_message(export_path)
     client.close()
 
 

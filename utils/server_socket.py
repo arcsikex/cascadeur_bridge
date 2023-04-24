@@ -10,8 +10,10 @@ class ServerSocket:
 
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self._host, self._port))
         self.sock.listen(1)
+
         self.client_socket = None
         print(f"Server listening on {self._host}:{self._port}")
 
@@ -40,14 +42,20 @@ class ServerSocket:
         self.sock.close()
 
 
+import subprocess
+
 if __name__ == "__main__":
-    fbx_settings = {"up_axis": "Y", "mode": "binary"}
+    subprocess.call(
+        [
+            r"C:\Program Files\Cascadeur\cascadeur.exe",
+            "commands.externals.temp_exporter.py",
+        ]
+    )
     s = ServerSocket()
     while True:
         s.run()
         if s.client_socket:
             print("Client connected")
             print(s.receive_message())
-            s.send_message(fbx_settings)
             s.close()
             break

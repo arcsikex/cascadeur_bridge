@@ -57,37 +57,31 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     bl_idname = "cbb.import_cascadeur_fbx"
     bl_label = "Import Cascadeur Scene"
-    _sock = None
 
     def modal(self, context, event):
         if event.type == "ESC":
-            self.close()
+            self.server_socket.close()
+            self.server_socket = None
             return {"CANCELLED"}
 
-        self._sock.run()
-        if self._sock.client_socket:
-            data = self._sock.receive_message()
-            if data:
-                file_handling.wait_for_file(data)
-                import_fbx(data)
-                file_handling.delete_file(data)
-                self._sock.close()
-                return {"FINISHED"}
-            else:
-                self.close()
-                return {"CANCELLED"}
+        self.server_socket.run()
 
-        return {"RUNNING_MODAL"}
+        data = self.server_socket.receive_message()
+        if data:
+            print(str(data))
+            file_handling.wait_for_file(data)
+            import_fbx(data)
+            file_handling.delete_file(data)
+            return {"FINISHED"}
+
+        return {"PASS_THROUGH"}
 
     def execute(self, context):
+        self.server_socket = ServerSocket()
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
-        self._sock = ServerSocket()
+
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
-
-    def close(self):
-        self._sock.close()
-        self._sock = None
 
 
 class CBB_OT_import_action_to_selected(bpy.types.Operator):
