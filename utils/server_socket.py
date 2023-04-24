@@ -1,4 +1,5 @@
 import socket
+import select
 import json
 
 
@@ -35,8 +36,10 @@ class ServerSocket:
         return message
 
     def run(self):
-        self.client_socket, client_address = self.sock.accept()
-        print(f"Connection from {client_address}")
+        ready, _, _ = select.select([self.sock], [], [], 0)
+        if ready:
+            self.client_socket, client_address = self.sock.accept()
+            print(f"Connection from {client_address}")
 
     def close(self):
         self.sock.close()
