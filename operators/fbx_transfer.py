@@ -2,6 +2,7 @@ import bpy
 import time
 
 from ..utils import file_handling
+from ..utils.server_socket import ServerSocket
 from ..utils.csc_handling import CascadeurHandler
 from . import reciever
 
@@ -10,14 +11,14 @@ def import_fbx(file_path: str) -> list:
     # Set import settings
     bpy.ops.import_scene.fbx(
         filepath=file_path,
-        use_anim=True,  # Don't import animations
-        use_image_search=True,  # Try to locate missing images
-        force_connect_children=False,  # Don't parent objects to armature bones
-        automatic_bone_orientation=False,  # Don't automatically orient bones
-        use_prepost_rot=False,  # Don't apply pre/post rotation
-        ignore_leaf_bones=True,  # Ignore leaf bones (not parented)
-        primary_bone_axis="Y",  # Set the primary bone axis to Y
-        secondary_bone_axis="X",  # Set the secondary bone axis to X
+        use_anim=True,
+        use_image_search=True,
+        force_connect_children=False,
+        automatic_bone_orientation=False,
+        use_prepost_rot=False,
+        ignore_leaf_bones=True,
+        primary_bone_axis="Y",
+        secondary_bone_axis="X",
         global_scale=1.0,
         use_manual_orientation=False,
         axis_forward="-Z",
@@ -56,20 +57,37 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     bl_idname = "cbb.import_cascadeur_fbx"
     bl_label = "Import Cascadeur Scene"
+    _sock = None
+
+    def modal(self, context, event):
+        if event.type == "ESC":
+            self.close()
+            return {"CANCELLED"}
+
+        self._sock.run()
+        if self._sock.client_socket:
+            data = self._sock.receive_message()
+            if data:
+                file_handling.wait_for_file(data)
+                import_fbx(data)
+                file_handling.delete_file(data)
+                self._sock.close()
+                return {"FINISHED"}
+            else:
+                self.close()
+                return {"CANCELLED"}
+
+        return {"RUNNING_MODAL"}
 
     def execute(self, context):
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
-        bpy.ops.cbb.start_server()
-        data = reciever.recieved_data
-        time.sleep(2)
-        if data:
-            file_handling.wait_for_file(data)
-            import_fbx(data)
-            file_handling.delete_file(data)
-            reciever.recieved_data = None
-        else:
-            return {"CANCELLED"}
-        return {"FINISHED"}
+        self._sock = ServerSocket()
+        context.window_manager.modal_handler_add(self)
+        return {"RUNNING_MODAL"}
+
+    def close(self):
+        self._sock.close()
+        self._sock = None
 
 
 class CBB_OT_import_action_to_selected(bpy.types.Operator):
