@@ -21,6 +21,9 @@ else:
 
 import bpy
 import platform
+import os
+
+ADDON_PATH = os.path.abspath(__file__)
 
 
 class CBB_preferences(bpy.types.AddonPreferences):
