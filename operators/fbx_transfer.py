@@ -56,6 +56,8 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     bl_idname = "cbb.import_cascadeur_fbx"
     bl_label = "Import Cascadeur Scene"
 
+    server_socket = None
+
     def modal(self, context, event):
         if event.type == "ESC":
             self.server_socket.close()
@@ -72,10 +74,6 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
                 import_fbx(data)
                 file_handling.delete_file(data)
                 return {"FINISHED"}
-        else:
-            self.server_socket.close()
-            self.server_socket = None
-            self.report({"ERROR"}, "No client found.")
 
         return {"PASS_THROUGH"}
 
@@ -121,11 +119,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
                 apply_action(self.ao, actions)
                 delete_objects(imported_objects)
                 return {"FINISHED"}
-        else:
-            self.server_socket.close()
-            self.server_socket = None
-            self.report({"ERROR"}, "No client found.")
-            return {"CANCELLED"}
 
         return {"PASS_THROUGH"}
 
