@@ -7,6 +7,17 @@ import bpy
 
 
 class CascadeurHandler:
+    required_scripts = [
+        "__init__.py",
+        "temp_exporter.py",
+    ]
+    # base_path = os.path.join(_ch.commands_path, "externals")
+    required_pyds = [
+        "_socket.pyd",
+        "select.pyd",
+    ]
+    # base_path = os.path.join(_ch.csc_dir, "python", "DLLs")
+
     @property
     def csc_exe_path_addon_preference(self) -> str:
         preferences = bpy.context.preferences
@@ -25,7 +36,6 @@ class CascadeurHandler:
 
     @property
     def commands_path(self) -> str:
-
         commands_config = os.path.join(self.csc_dir, "resources", "settings.ini")
         with open(commands_config, "r") as f:
             for line in f:
@@ -44,4 +54,4 @@ class CascadeurHandler:
         subprocess.Popen([csc_path])
 
     def execute_csc_command(self, command: str) -> None:
-        subprocess.call([self.csc_exe_path_addon_preference, command])
+        subprocess.Popen([self.csc_exe_path_addon_preference, command])

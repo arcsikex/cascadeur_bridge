@@ -26,40 +26,36 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
             )
             col.separator()
 
-        if not file_handling.commands_installed() or not file_handling.pyds_installed():
-            col.label(icon="ERROR", text="Install necessary files for Cascadeur!")
-            col.separator()
-
         col.operator(
             "cbb.start_cascadeur",
             text="Start Cascadeur",
             icon="MESH_UVSPHERE",
         )
+        col.separator()
 
-
-class CBB_PT_csc_to_blender(PanelBasics, bpy.types.Panel):
-    bl_idname = "CBB_PT_csc_to_blender"
-    bl_label = "Cascadeur -> Blender"
-    bl_parent_id = "CBB_PT_parent"
-
-    """
-    def draw_header(self, context):
-        self.layout.label(text="", icon="")
-    """
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column(align=True)
-
-        # Operations Layout
+        # Cascadeur to Blender
+        box = layout.box()
+        col = box.column(align=True)
+        col.label(text="Cascadeur > Blender")
         col.operator(
             "cbb.import_cascadeur_action",
             text="Import Action",
             icon="IMPORT",
         )
-
         col.operator(
             "cbb.import_cascadeur_fbx",
             text="Import Scene",
             icon="IMPORT",
         )
+
+
+"""
+class CBB_PT_csc_to_blender(PanelBasics, bpy.types.Panel):
+    bl_idname = "CBB_PT_csc_to_blender"
+    bl_label = "Cascadeur -> Blender"
+    bl_parent_id = "CBB_PT_parent"
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column(align=True)
+"""

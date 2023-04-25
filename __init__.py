@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Cascadeur Bridge for Blender",
     "author": "Aron Nemeth",
-    "version": (0, 1),
+    "version": (0, 2),
     "blender": (3, 5, 0),
     "location": "View3D > Panels > CSC Bridge",
     "description": "Helps you to integrate Cascadeur to your workflow with Belnder.",
@@ -21,6 +21,9 @@ else:
 
 import bpy
 import platform
+import os
+
+ADDON_PATH = os.path.abspath(__file__)
 
 
 class CBB_preferences(bpy.types.AddonPreferences):

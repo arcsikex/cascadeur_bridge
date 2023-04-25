@@ -11,6 +11,5 @@ import bpy
 
 classes = [
     main_panel.CBB_PT_parent_panel,
-    main_panel.CBB_PT_csc_to_blender,
     socials.CBB_PT_csc_bridge_info,
 ]
