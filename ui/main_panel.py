@@ -26,20 +26,31 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
             )
             col.separator()
 
-        col.operator(
+        row = col.row()
+
+        row.operator(
             "cbb.start_cascadeur",
             text="Start Cascadeur",
             icon="MESH_UVSPHERE",
         )
+        row.scale_y = 1.5
         col.separator()
 
+        # Blender to Cascadeur
+        box = layout.box()
+        col = box.column(align=True)
+        row = col.row()
+        row.label(text="Blender > Cascadeur")
+        row.scale_y = 1.2
+
+        col.operator("cbb.export_blender_fbx", text="Export Selected", icon="EXPORT")
         # Cascadeur to Blender
         box = layout.box()
         col = box.column(align=True)
-        col.operator("cbb.export_blender_fbx", text="Export Selected", icon="EXPORT")
-        box = layout.box()
-        col = box.column(align=True)
-        col.label(text="Cascadeur > Blender")
+        row = col.row()
+        row.label(text="Cascadeur > Blender")
+        row.scale_y = 1.2
+
         col.operator(
             "cbb.import_cascadeur_action",
             text="Import Action",

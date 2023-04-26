@@ -82,7 +82,9 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
             self.server_socket.send_message(self.file_path)
             response = self.server_socket.receive_message()
             if response == "SUCCESS":
+                print("File successfully imported to Cascadeur.")
                 self.server_socket.close()
+                file_handling.delete_file(self.file_path)
                 return {"FINISHED"}
             else:
                 self.server_socket.close()

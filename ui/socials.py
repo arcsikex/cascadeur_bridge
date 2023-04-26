@@ -19,7 +19,7 @@ class CBB_PT_csc_bridge_info(PanelBasics, bpy.types.Panel):
         column = box.column()
 
         row = column.row(align=True)
-        row.scale_y = 1.2
+        row.scale_y = 1.1
         row.operator(
             "wm.url_open", text="YouTube", icon="FILE_MOVIE"
         ).url = "https://www.youtube.com/c/AronNemeth95"
