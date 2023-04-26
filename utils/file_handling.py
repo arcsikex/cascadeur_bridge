@@ -1,5 +1,6 @@
 import os
 import time
+import tempfile
 
 
 def file_exists(file_path: str) -> bool:
@@ -24,3 +25,9 @@ def wait_for_file(file_path: str, timeout: int = 60) -> bool:
         else:
             time.sleep(1)
     return export_finished
+
+
+def get_export_path():
+    temp_dir = tempfile.gettempdir()
+    current_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
+    return os.path.join(temp_dir, f"temp_export_{current_time}.fbx")

@@ -36,6 +36,9 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         # Cascadeur to Blender
         box = layout.box()
         col = box.column(align=True)
+        col.operator("cbb.export_blender_fbx", text="Export Selected", icon="EXPORT")
+        box = layout.box()
+        col = box.column(align=True)
         col.label(text="Cascadeur > Blender")
         col.operator(
             "cbb.import_cascadeur_action",
