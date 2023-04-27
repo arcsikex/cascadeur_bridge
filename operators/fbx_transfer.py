@@ -4,7 +4,7 @@ import os
 from ..utils import file_handling
 from ..utils.server_socket import ServerSocket
 from ..utils.csc_handling import CascadeurHandler
-from .. import ADDON_PATH
+from ..addonpath import ADDON_PATH
 
 
 def import_fbx(file_path: str) -> list:

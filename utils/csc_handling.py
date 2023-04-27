@@ -2,7 +2,7 @@ import subprocess
 import os
 
 from . import file_handling
-from .. import ADDON_PATH
+from ..addonpath import ADDON_PATH
 
 import bpy
 
