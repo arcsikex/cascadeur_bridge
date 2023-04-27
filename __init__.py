@@ -44,8 +44,16 @@ class CBB_preferences(bpy.types.AddonPreferences):
 
     def draw(self, context):
         layout = self.layout
-        layout.label(text="Cascadeur Executable path:")
-        layout.prop(self, "csc_exe_path")
+        col = layout.column(align=False)
+        row = col.row()
+        row.label(text="Cascadeur Executable path:")
+        row.prop(self, "csc_exe_path")
+        row = col.row()
+        row.operator(
+            "cbb.install_required_files",
+            text="Install Requirements",
+            icon="IMPORT",
+        )
 
 
 classes = [CBB_preferences] + operators.classes + ui.classes
