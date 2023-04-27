@@ -4,7 +4,6 @@ import os
 from ..utils import file_handling
 from ..utils.server_socket import ServerSocket
 from ..utils.csc_handling import CascadeurHandler
-from ..addonpath import ADDON_PATH
 
 
 def import_fbx(file_path: str) -> list:
@@ -200,6 +199,9 @@ class CBB_OT_start_cascadeur(bpy.types.Operator):
         return {"FINISHED"}
 
 
+ADDON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+
 class CBB_OT_install_required_files(bpy.types.Operator):
     """Copy the necessary DLLs and python script to Cascadeurs folder"""
 
@@ -219,7 +221,8 @@ class CBB_OT_install_required_files(bpy.types.Operator):
             commands_source, commands_path, ch.required_scripts
         )
         if not result:
-            self.report({"ERROR"}, "Wasn't able to copy commands to Cascadeurs path")
+            self.report({"ERROR"}, "Wasn't able to copy commands to Cascadeurs path.")
+            return {"CANCELLED"}
 
         # Copy DLLs
         dlls_source = os.path.join(ADDON_PATH, "csc_files")
@@ -228,4 +231,7 @@ class CBB_OT_install_required_files(bpy.types.Operator):
             dlls_source, dlls_path, ch.required_dlls, overwrite=False
         )
         if not result:
-            self.report({"ERROR"}, "Wasn't able to copy DLLs to Cascadeurs path")
+            self.report({"ERROR"}, "Wasn't able to copy DLLs to Cascadeurs path.")
+            return {"CANCELLED"}
+        self.report({"INFO"}, "Files successfully copied.")
+        return {"FINISHED"}

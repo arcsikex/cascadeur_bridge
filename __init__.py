@@ -34,7 +34,7 @@ class CBB_preferences(bpy.types.AddonPreferences):
         return csc_path.get(platform.system(), "")
 
     csc_exe_path: bpy.props.StringProperty(
-        name="File Path",
+        name="Cascadeur executable",
         subtype="FILE_PATH",
         default=default_csc_exe_path(),
     )
@@ -43,7 +43,6 @@ class CBB_preferences(bpy.types.AddonPreferences):
         layout = self.layout
         col = layout.column(align=False)
         row = col.row()
-        row.label(text="Cascadeur Executable path:")
         row.prop(self, "csc_exe_path")
         row = col.row()
         row.operator(

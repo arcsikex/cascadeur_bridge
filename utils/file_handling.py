@@ -5,7 +5,7 @@ import shutil
 
 
 def file_exists(file_path: str) -> bool:
-    return os.path.exists(file_path) and os.path.isfile(file_path)
+    return os.path.exists(file_path)
 
 
 def delete_file(file_path: str) -> None:
@@ -60,7 +60,7 @@ def copy_files(source_folder, target_folder, file_list, overwrite=True):
             continue
         try:
             shutil.copy2(source_path, target_path)
-        except shutil.Error as e:
+        except PermissionError as e:
             print(f"Error copying {source_path} to {target_path}: {e}")
             return False
     return True
