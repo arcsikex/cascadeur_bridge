@@ -54,7 +54,7 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         col.operator(
             "cbb.import_cascadeur_action",
             text="Import Action",
-            icon="IMPORT",
+            icon="ARMATURE_DATA",
         )
         col.operator(
             "cbb.import_cascadeur_fbx",

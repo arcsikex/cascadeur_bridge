@@ -48,7 +48,7 @@ class CBB_preferences(bpy.types.AddonPreferences):
         row.operator(
             "cbb.install_required_files",
             text="Install Requirements",
-            icon="IMPORT",
+            icon="MODIFIER",
         )
 
 
