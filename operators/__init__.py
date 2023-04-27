@@ -10,4 +10,5 @@ classes = [
     fbx_transfer.CBB_OT_import_cascadeur_fbx,
     fbx_transfer.CBB_OT_import_action_to_selected,
     fbx_transfer.CBB_OT_start_cascadeur,
+    fbx_transfer.CBB_OT_install_required_files,
 ]

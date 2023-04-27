@@ -2,6 +2,7 @@ import subprocess
 import os
 
 from . import file_handling
+from .. import ADDON_PATH
 
 import bpy
 
@@ -12,7 +13,7 @@ class CascadeurHandler:
         "temp_exporter.py",
     ]
     # base_path = os.path.join(_ch.commands_path, "externals")
-    required_pyds = [
+    required_dlls = [
         "_socket.pyd",
         "select.pyd",
     ]
@@ -55,3 +56,21 @@ class CascadeurHandler:
 
     def execute_csc_command(self, command: str) -> None:
         subprocess.Popen([self.csc_exe_path_addon_preference, command])
+
+    @property
+    def are_commands_installed(self):
+        for file in self.required_scripts:
+            if not file_handling.file_exists(
+                os.path.join(self.commands_path, "externals", file)
+            ):
+                return False
+        return True
+
+    @property
+    def are_dlls_installed(self):
+        for file in self.required_dlls:
+            if not file_handling.file_exists(
+                os.path.join(self.csc_dir, "python", "DLLs", file)
+            ):
+                return False
+        return True
