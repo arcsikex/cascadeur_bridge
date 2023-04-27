@@ -221,7 +221,10 @@ class CBB_OT_install_required_files(bpy.types.Operator):
             commands_source, commands_path, ch.required_scripts
         )
         if not result:
-            self.report({"ERROR"}, "Wasn't able to copy commands to Cascadeurs path.")
+            self.report(
+                {"ERROR"}, "You don't have permission to copy the files for Cascadeur"
+            )
+            self.report({"INFO"}, "Restart Blender as Admin and try again")
             return {"CANCELLED"}
 
         # Copy DLLs
@@ -231,7 +234,10 @@ class CBB_OT_install_required_files(bpy.types.Operator):
             dlls_source, dlls_path, ch.required_dlls, overwrite=False
         )
         if not result:
-            self.report({"ERROR"}, "Wasn't able to copy DLLs to Cascadeurs path.")
+            self.report(
+                {"ERROR"}, "You don't have permission to copy the files for Cascadeur"
+            )
+            self.report({"INFO"}, "Restart Blender as Admin and try again")
             return {"CANCELLED"}
-        self.report({"INFO"}, "Files successfully copied.")
+        self.report({"INFO"}, "All necessary files have been successfully copied")
         return {"FINISHED"}
