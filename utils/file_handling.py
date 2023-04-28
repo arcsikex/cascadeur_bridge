@@ -28,24 +28,13 @@ def wait_for_file(file_path: str, timeout: int = 60) -> bool:
     return export_finished
 
 
-def get_export_path():
+def get_export_path() -> str:
     temp_dir = tempfile.gettempdir()
     current_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
     return os.path.join(temp_dir, f"temp_export_{current_time}.fbx")
 
 
-def copy_files(source_folder, target_folder, file_list, overwrite=True):
-    """
-    Copy a list of files from a source folder to a target folder.
-
-    Args:
-        source_folder (str): The path to the source folder.
-        target_folder (str): The path to the target folder.
-        file_list (list): A list of file names to be copied.
-
-    Returns:
-        None
-    """
+def copy_files(source_folder, target_folder, file_list, overwrite=True) -> bool:
     if not os.path.exists(target_folder):
         os.makedirs(target_folder)
 

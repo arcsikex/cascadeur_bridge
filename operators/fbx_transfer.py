@@ -1,5 +1,4 @@
 import bpy
-import os
 
 from ..utils import file_handling
 from ..utils.server_socket import ServerSocket
@@ -7,7 +6,6 @@ from ..utils.csc_handling import CascadeurHandler
 
 
 def import_fbx(file_path: str) -> list:
-    # Set import settings
     bpy.ops.import_scene.fbx(
         filepath=file_path,
         use_anim=True,
@@ -32,14 +30,16 @@ def export_fbx(file_path: str) -> None:
         filepath=file_path,
         use_selection=True,
         add_leaf_bones=False,
-        # primary_bone_axis="Y",
-        # axis_up="Z",
-        # axis_forward="-Y",
+        primary_bone_axis="Y",
+        axis_up="Y",
+        axis_forward="-Z",
         bake_anim=True,
+        global_scale=1.0,
+        use_armature_deform_only=True,
     )
 
 
-def get_actions_from_objects(selected_objects: list):
+def get_actions_from_objects(selected_objects: list) -> list:
     actions = []
     for obj in selected_objects:
         if obj.type == "ARMATURE":
@@ -47,7 +47,7 @@ def get_actions_from_objects(selected_objects: list):
     return actions
 
 
-def delete_objects(objects):
+def delete_objects(objects: list) -> None:
     for obj in objects:
         bpy.data.objects.remove(obj, do_unlink=True)
 
@@ -55,7 +55,7 @@ def delete_objects(objects):
     bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
 
 
-def apply_action(armature, actions: list):
+def apply_action(armature, actions: list) -> None:
     if len(actions) == 1:
         actions[0].name = "cascadeur_action"
         if not hasattr(armature.animation_data, "action"):
@@ -181,63 +181,3 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
-
-
-# Should be moved to a different place
-class CBB_OT_start_cascadeur(bpy.types.Operator):
-    """Start Cascadeur"""
-
-    bl_idname = "cbb.start_cascadeur"
-    bl_label = "Start Cascadeur"
-
-    @classmethod
-    def poll(cls, context):
-        return CascadeurHandler().is_csc_exe_path_valid
-
-    def execute(self, context):
-        CascadeurHandler().start_cascadeur()
-        return {"FINISHED"}
-
-
-ADDON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-
-
-class CBB_OT_install_required_files(bpy.types.Operator):
-    """Copy the necessary DLLs and python script to Cascadeurs folder"""
-
-    bl_idname = "cbb.install_required_files"
-    bl_label = "Install Required Files"
-
-    @classmethod
-    def poll(cls, context):
-        return CascadeurHandler().is_csc_exe_path_valid
-
-    def execute(self, context):
-        ch = CascadeurHandler()
-        # Copy commands
-        commands_source = os.path.join(ADDON_PATH, "csc_files", "externals")
-        commands_path = os.path.join(ch.commands_path, "externals")
-        result = file_handling.copy_files(
-            commands_source, commands_path, ch.required_scripts
-        )
-        if not result:
-            self.report(
-                {"ERROR"}, "You don't have permission to copy the files for Cascadeur"
-            )
-            self.report({"INFO"}, "Restart Blender as Admin and try again")
-            return {"CANCELLED"}
-
-        # Copy DLLs
-        dlls_source = os.path.join(ADDON_PATH, "csc_files")
-        dlls_path = os.path.join(ch.csc_dir, "python", "DLLs")
-        result = file_handling.copy_files(
-            dlls_source, dlls_path, ch.required_dlls, overwrite=False
-        )
-        if not result:
-            self.report(
-                {"ERROR"}, "You don't have permission to copy the files for Cascadeur"
-            )
-            self.report({"INFO"}, "Restart Blender as Admin and try again")
-            return {"CANCELLED"}
-        self.report({"INFO"}, "All necessary files have been successfully copied")
-        return {"FINISHED"}

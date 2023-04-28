@@ -24,7 +24,7 @@ class CascadeurHandler:
         return addon_prefs.csc_exe_path
 
     @property
-    def csc_dir(self):
+    def csc_dir(self) -> str:
         if self.is_csc_exe_path_valid:
             return os.path.dirname(self.csc_exe_path_addon_preference)
 
@@ -56,7 +56,7 @@ class CascadeurHandler:
         subprocess.Popen([self.csc_exe_path_addon_preference, command])
 
     @property
-    def are_commands_installed(self):
+    def are_commands_installed(self) -> bool:
         for file in self.required_scripts:
             if not file_handling.file_exists(
                 os.path.join(self.commands_path, "externals", file)
@@ -65,7 +65,7 @@ class CascadeurHandler:
         return True
 
     @property
-    def are_dlls_installed(self):
+    def are_dlls_installed(self) -> bool:
         for file in self.required_dlls:
             if not file_handling.file_exists(
                 os.path.join(self.csc_dir, "python", "DLLs", file)
