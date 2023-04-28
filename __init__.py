@@ -22,6 +22,8 @@ else:
 import bpy
 import platform
 
+from .utils import file_handling
+
 
 class CBB_preferences(bpy.types.AddonPreferences):
     bl_idname = __name__
@@ -31,7 +33,8 @@ class CBB_preferences(bpy.types.AddonPreferences):
         csc_path = {
             "Windows": r"C:\Program Files\Cascadeur\cascadeur.exe",
         }
-        return csc_path.get(platform.system(), "")
+        default = csc_path.get(platform.system(), "")
+        return default if file_handling.file_exists(default) else ""
 
     csc_exe_path: bpy.props.StringProperty(
         name="Cascadeur executable",
