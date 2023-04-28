@@ -32,11 +32,3 @@ class ClientSocket:
 
     def close(self):
         self.client_socket.close()
-
-
-if __name__ == "__main__":
-    paths = r"C:\Windows\System32\cmd.exe"
-    c = ClientSocket()
-    c.send_message(paths)
-    print(c.receive_message())
-    c.close()

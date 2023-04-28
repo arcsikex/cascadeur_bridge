@@ -8,9 +8,6 @@ def command_name():
 
 
 def run(scene):
-    client = ClientSocket()
-    file_path = client.receive_message()
-
     mp = csc.app.get_application()
     scene_pr = mp.get_scene_manager().current_scene()
     fbx_scene_loader = (
@@ -19,6 +16,9 @@ def run(scene):
         .get_tool("FbxSceneLoader")
         .get_fbx_loader(scene_pr)
     )
+
+    client = ClientSocket()
+    file_path = client.receive_message()
     fbx_scene_loader.import_model(file_path)
     scene.info(f"File imported from {file_path}")
     client.send_message("SUCCESS")

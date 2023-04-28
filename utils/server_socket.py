@@ -43,22 +43,3 @@ class ServerSocket:
 
     def close(self):
         self.sock.close()
-
-
-import subprocess
-
-if __name__ == "__main__":
-    subprocess.call(
-        [
-            r"C:\Program Files\Cascadeur\cascadeur.exe",
-            "commands.externals.temp_exporter.py",
-        ]
-    )
-    s = ServerSocket()
-    while True:
-        s.run()
-        if s.client_socket:
-            print("Client connected")
-            print(s.receive_message())
-            s.close()
-            break
