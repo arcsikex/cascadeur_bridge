@@ -36,11 +36,11 @@ def get_export_path() -> str:
 
 def copy_files(source_folder, target_folder, file_list, overwrite=True) -> bool:
     if not os.path.exists(target_folder):
-        os.makedirs(target_folder)
-
-    if not os.access(target_folder, os.W_OK):
-        print(f"Error: Write access to {target_folder} denied.")
-        return False
+        try:
+            os.makedirs(target_folder)
+        except PermissionError as e:
+            print(f"Error creating {target_folder}: {e}")
+            return False
 
     for file_name in file_list:
         source_path = os.path.join(source_folder, file_name)
