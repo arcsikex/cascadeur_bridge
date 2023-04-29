@@ -55,12 +55,11 @@ def delete_objects(objects: list) -> None:
     bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
 
 
-def apply_action(armature, actions: list) -> None:
-    if len(actions) == 1:
-        actions[0].name = "cascadeur_action"
-        if not hasattr(armature.animation_data, "action"):
-            armature.animation_data_create()
-        armature.animation_data.action = actions[0]
+def apply_action(armature, action) -> None:
+    action.name = "cascadeur_action"
+    if not hasattr(armature.animation_data, "action"):
+        armature.animation_data_create()
+    armature.animation_data.action = action
 
 
 class CBB_OT_export_blender_fbx(bpy.types.Operator):
@@ -86,6 +85,7 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
                 print("File successfully imported to Cascadeur.")
                 self.server_socket.close()
                 file_handling.delete_file(self.file_path)
+                self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
             else:
                 self.server_socket.close()
@@ -126,6 +126,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
                 import_fbx(data)
                 file_handling.delete_file(data)
                 self.server_socket.close()
+                self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 
         return {"PASS_THROUGH"}
@@ -168,9 +169,10 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
                 imported_objects = import_fbx(data)
                 file_handling.delete_file(data)
                 actions = get_actions_from_objects(imported_objects)
-                apply_action(self.ao, actions)
+                apply_action(self.ao, actions[0])
                 delete_objects(imported_objects)
                 self.server_socket.close()
+                self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 
         return {"PASS_THROUGH"}
