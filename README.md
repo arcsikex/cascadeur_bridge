@@ -3,6 +3,9 @@
 Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur into your workflow with Blender.
 
 ## Features
+
+![Cascadeur Bridge UI](/doc/addon_side_panel.png)
+
 - Start Cascadeur from Blender 
 - Export selected objects from Blender to Cascadeur
 - Import whole scene from Cascadeur
@@ -13,12 +16,14 @@ Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur int
 To install Cascadeur Bridge, follow these steps:
 
 1. Download the latest release from the **releases**
-2. Open Blender and go to Edit > Preferences
+2. Open Blender and go to **Edit > Preferences**
 4. Click on the Add-ons tab, then click the Install button at the top of the window
-5. Navigate to the downloaded zip
-6. Click the Install Add-on button, then enable the addon by clicking the checkbox next to its name
-7. Set the Cascadeur executable path
-8. Click the Install Requirements button (You might need admin privilages)
+5. Select the downloaded zip
+6. Click the **Install Add-on** button, then enable the addon by clicking the checkbox next to its name
+7. **Set the Cascadeur executable path**
+8. Click the **Install Requirements** button (If you get an error try to restart Blender as an Admin)
+
+![Preferences view of the addon](/doc/addon_pereferences.png)
 
 ## Usage
 
