@@ -33,6 +33,14 @@ This operator imports the Cascadeur scene as fbx, apply the imported action to t
 - **Import Scene** will simply import the current Cascadeur scene as an fbx.
 - **Export Selected** will export the selected objects and import them into Cascadeur
 
+## Remove the addon
+
+To remove the addon 
+- from **Blender** go to **Edit > Preferences > Add-ons** and click on the Remove button of the add-on.
+- from **Cascadeur** 
+    - go to your commands folder (*CASCADEUR PATH\resources\scripts\python\commands*) and delete the ***externals*** folder. 
+    - go to *CASCADEUR PATH\python\DLLs* and delete the ***_socket.pyd*** and ***select.pyd*** files. (These files might be included in the official Cascadeur install in the future!)
+
 ## Future plans:
 - Make fbx import/export settings section
 - Import actions from all opened scene
