@@ -22,7 +22,7 @@ class CBB_PT_csc_bridge_info(PanelBasics, bpy.types.Panel):
         row.scale_y = 1.1
         row.operator(
             "wm.url_open", text="YouTube", icon="FILE_MOVIE"
-        ).url = "https://www.youtube.com/c/AronNemeth95"
+        ).url = "https://youtu.be/0muo9EPIPSE"
         row.operator(
             "wm.url_open", text="GitHub", icon="SCRIPT"
         ).url = "https://github.com/arcsikex/cascadeur_bridge"
