@@ -2,6 +2,9 @@
 
 Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur into your workflow with Blender.
 
+For a visual introduction watch the youtube video:
+[![Watch the video](https://img.youtube.com/vi/0muo9EPIPSE/default.jpg)](https://youtu.be/0muo9EPIPSE)
+
 ## Features
 
 ![Cascadeur Bridge UI](/doc/addon_side_panel.png)
@@ -15,7 +18,7 @@ Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur int
 
 To install Cascadeur Bridge, follow these steps:
 
-1. Download the latest release from the **releases**
+1. Download the [latest release](https://github.com/arcsikex/cascadeur_bridge/releases/tag/0.4) from the **releases**
 2. Open Blender and go to **Edit > Preferences**
 4. Click on the Add-ons tab, then click the Install button at the top of the window
 5. Select the downloaded zip
