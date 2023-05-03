@@ -3,6 +3,7 @@
 Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur into your workflow with Blender.
 
 For a visual introduction watch the youtube video:
+
 [![Watch the video](https://img.youtube.com/vi/0muo9EPIPSE/default.jpg)](https://youtu.be/0muo9EPIPSE)
 
 ## Features
