@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Cascadeur Bridge for Blender",
     "author": "Aron Nemeth",
-    "version": (0, 4),
+    "version": (0, 4, 1),
     "blender": (3, 5, 0),
     "location": "View3D > Panels > CSC Bridge",
     "description": "Helps you to integrate Cascadeur to your workflow with Belnder.",
