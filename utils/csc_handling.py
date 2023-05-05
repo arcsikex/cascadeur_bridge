@@ -1,4 +1,5 @@
 import subprocess
+import platform
 import os
 
 from . import file_handling
@@ -53,10 +54,13 @@ class CascadeurHandler:
         subprocess.Popen([csc_path])
 
     def execute_csc_command(self, command: str) -> None:
-        subprocess.Popen(
-            [self.csc_exe_path_addon_preference, command],
-            creationflags=subprocess.CREATE_NEW_CONSOLE,
-        )
+        if platform.system() == "Windows":
+            subprocess.Popen(
+                [self.csc_exe_path_addon_preference, command],
+                creationflags=subprocess.CREATE_NEW_CONSOLE,
+            )
+        else:
+            subprocess.Popen([self.csc_exe_path_addon_preference, command])
 
     @property
     def are_commands_installed(self) -> bool:

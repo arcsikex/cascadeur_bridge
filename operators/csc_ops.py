@@ -1,5 +1,6 @@
 import bpy
 import os
+import platform
 
 from ..utils import file_handling
 from ..utils.csc_handling import CascadeurHandler
@@ -48,16 +49,17 @@ class CBB_OT_install_required_files(bpy.types.Operator):
             return {"CANCELLED"}
 
         # Copy DLLs
-        dlls_source = os.path.join(ADDON_PATH, "csc_files")
-        dlls_path = os.path.join(ch.csc_dir, "python", "DLLs")
-        result = file_handling.copy_files(
-            dlls_source, dlls_path, ch.required_dlls, overwrite=False
-        )
-        if not result:
-            self.report(
-                {"ERROR"}, "You don't have permission to copy the files for Cascadeur"
+        if platform.system() == "Windows":
+            dlls_source = os.path.join(ADDON_PATH, "csc_files")
+            dlls_path = os.path.join(ch.csc_dir, "python", "DLLs")
+            result = file_handling.copy_files(
+                dlls_source, dlls_path, ch.required_dlls, overwrite=False
             )
-            self.report({"INFO"}, "Restart Blender as Admin and try again")
-            return {"CANCELLED"}
+            if not result:
+                self.report(
+                    {"ERROR"}, "You don't have permission to copy the files for Cascadeur"
+                )
+                self.report({"INFO"}, "Restart Blender as Admin and try again")
+                return {"CANCELLED"}
         self.report({"INFO"}, "All necessary files have been successfully copied")
         return {"FINISHED"}

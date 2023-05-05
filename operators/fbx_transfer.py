@@ -71,9 +71,11 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
     server_socket = None
     file_path = None
 
+    def __del__(self):
+        self.server_socket.close()
+
     def modal(self, context, event):
         if event.type == "ESC":
-            self.server_socket.close()
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -83,12 +85,10 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
             response = self.server_socket.receive_message()
             if response == "SUCCESS":
                 print("File successfully imported to Cascadeur.")
-                self.server_socket.close()
                 file_handling.delete_file(self.file_path)
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
             else:
-                self.server_socket.close()
                 return {"CANCELLED"}
 
         return {"PASS_THROUGH"}
@@ -111,9 +111,11 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     server_socket = None
 
+    def __del__(self):
+        self.server_socket.close()
+
     def modal(self, context, event):
         if event.type == "ESC":
-            self.server_socket.close()
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -125,7 +127,6 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
                 file_handling.wait_for_file(data)
                 import_fbx(data)
                 file_handling.delete_file(data)
-                self.server_socket.close()
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 
@@ -154,9 +155,11 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             and context.active_object.type == "ARMATURE"
         )
 
+    def __del__(self):
+        self.server_socket.close()
+
     def modal(self, context, event):
         if event.type == "ESC":
-            self.server_socket.close()
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -171,7 +174,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
                 actions = get_actions_from_objects(imported_objects)
                 apply_action(self.ao, actions[0])
                 delete_objects(imported_objects)
-                self.server_socket.close()
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 
