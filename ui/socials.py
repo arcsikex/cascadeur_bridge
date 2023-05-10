@@ -6,6 +6,7 @@ class CBB_PT_csc_bridge_info(PanelBasics, bpy.types.Panel):
     bl_idname = "CBB_PT_csc_bridge_info"
     bl_label = "Information"
     bl_parent_id = "CBB_PT_parent"
+    bl_options = {"DEFAULT_CLOSED"}
 
     def draw_header(self, context):
         self.layout.label(text="", icon="INFO")
