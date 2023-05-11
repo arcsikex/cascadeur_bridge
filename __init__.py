@@ -60,10 +60,12 @@ classes = [CBB_preferences] + operators.classes + ui.classes
 
 
 def register():
+    operators.addon_properties.register_props()
     for cls in classes:
         bpy.utils.register_class(cls)
 
 
 def unregister():
+    operators.addon_properties.unregister_props()
     for cls in classes:
         bpy.utils.unregister_class(cls)

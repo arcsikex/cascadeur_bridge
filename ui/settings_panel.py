@@ -25,9 +25,14 @@ class CBB_PT_csc_export_settings(PanelBasics, bpy.types.Panel):
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
+        addon_props = context.scene.cbb_fbx_settings
         layout = self.layout
         col = layout.column(align=True)
         col.label(text="Options for Cascadeur FBX export")
+        col.prop(addon_props, "cbb_import_selected")
+        col.prop(addon_props, "cbb_apply_euler_filter")
+        col.prop(addon_props, "cbb_csc_up_axis")
+        layout.separator()
 
 
 class CBB_PT_blender_export_settings(PanelBasics, bpy.types.Panel):

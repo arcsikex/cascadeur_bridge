@@ -31,10 +31,7 @@ def run(scene):
 
 def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     settings = csc.fbx.FbxSettings()
-    if preferences.get("mode") == "Ascii":
-        settings.mode = csc.fbx.FbxSettingsMode.Ascii
-    else:
-        settings.mode = csc.fbx.FbxSettingsMode.Binary
+    settings.mode = csc.fbx.FbxSettingsMode.Binary
     if preferences.get("selected_interval"):
         settings.export_selected_interval = True
     else:
@@ -42,7 +39,7 @@ def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     if preferences.get("euler_filter"):
         settings.apply_euler_filter = True
     else:
-        settings.apply_euler_filter = True
+        settings.apply_euler_filter = False
     if preferences.get("up_axis") == "Z":
         settings.up_axis = csc.fbx.FbxSettingsAxis.Z
     else:
