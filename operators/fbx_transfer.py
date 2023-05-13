@@ -1,5 +1,6 @@
 import bpy
 
+from .addon_properties import get_csc_export_settings
 from ..utils import file_handling
 from ..utils.server_socket import ServerSocket
 from ..utils.csc_handling import CascadeurHandler
@@ -121,6 +122,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
         self.server_socket.run()
 
         if self.server_socket.client_socket:
+            self.server_socket.send_message(get_csc_export_settings())
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
@@ -165,6 +167,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         self.server_socket.run()
 
         if self.server_socket.client_socket:
+            self.server_socket.send_message(get_csc_export_settings())
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))

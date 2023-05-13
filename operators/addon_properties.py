@@ -32,3 +32,12 @@ def register_props():
 
 def unregister_props():
     bpy.utils.unregister_class(CBB_PG_fbx_settings)
+
+
+def get_csc_export_settings() -> dict:
+    settings = {}
+    addon_props = bpy.context.scene.cbb_fbx_settings
+    settings["selected_interval"] = addon_props.cbb_import_selected
+    settings["euler_filter"] = addon_props.cbb_apply_euler_filter
+    settings["up_axis"] = addon_props.cbb_csc_up_axis
+    return settings

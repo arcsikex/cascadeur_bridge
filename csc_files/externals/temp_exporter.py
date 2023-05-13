@@ -21,10 +21,12 @@ def run(scene):
         .get_fbx_loader(scene_pr)
     )
     export_path = get_export_path()
-    fbx_scene_loader.set_settings(set_export_settings())
+    client = ClientSocket()
+    settings_dict = client.receive_message()
+    fbx_scene_loader.set_settings(set_export_settings(settings_dict))
     fbx_scene_loader.export_all_objects(export_path)
     scene.info(f"File exported to {export_path}")
-    client = ClientSocket()
+
     client.send_message(export_path)
     client.close()
 
