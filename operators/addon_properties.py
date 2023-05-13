@@ -16,7 +16,7 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     )
 
     cbb_csc_up_axis: bpy.props.EnumProperty(
-        items=[("Y", "Y", "", 1), ("Z", "Z", "", 1)],
+        items=[("Y", "Y", ""), ("Z", "Z", "")],
         name="Up Axis",
         description="Up Axis when exporting from Cascadeur",
         default="Y",
