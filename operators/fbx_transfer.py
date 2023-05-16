@@ -98,7 +98,7 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
 
         self.file_path = file_handling.get_export_path()
         export_fbx(self.file_path)
-        CascadeurHandler().execute_csc_command("commands.externals.temp_importer.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_importer")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
@@ -134,7 +134,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     def execute(self, context):
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
@@ -182,6 +182,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
     def execute(self, context):
         self.ao = bpy.context.active_object
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
