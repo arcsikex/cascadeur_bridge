@@ -34,6 +34,7 @@ def run(scene):
 def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     settings = csc.fbx.FbxSettings()
     settings.mode = csc.fbx.FbxSettingsMode.Binary
+
     if preferences.get("selected_interval"):
         settings.export_selected_interval = True
     else:
@@ -46,6 +47,10 @@ def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
         settings.up_axis = csc.fbx.FbxSettingsAxis.Z
     else:
         settings.up_axis = csc.fbx.FbxSettingsAxis.Y
+    if not preferences.get("bake_animation"):
+        settings.bake_animation = False
+    else:
+        settings.bake_animation = True
     return settings
 
 

@@ -9,18 +9,22 @@ from ..utils.csc_handling import CascadeurHandler
 def import_fbx(file_path: str) -> list:
     bpy.ops.import_scene.fbx(
         filepath=file_path,
-        use_anim=True,
-        use_image_search=True,
-        force_connect_children=False,
-        automatic_bone_orientation=False,
-        use_prepost_rot=False,
-        ignore_leaf_bones=True,
-        primary_bone_axis="Y",
-        secondary_bone_axis="X",
+        # Transform
         global_scale=1.0,
+        bake_space_transform=False,  # Apply Transform
         use_manual_orientation=False,
         axis_forward="-Z",
         axis_up="Y",
+        # Animation
+        use_anim=True,
+        anim_offset=1.0,
+        # Armature
+        ignore_leaf_bones=True,
+        force_connect_children=False,
+        automatic_bone_orientation=False,
+        primary_bone_axis="Y",
+        secondary_bone_axis="X",
+        use_prepost_rot=False,
     )
     # Return the list of imported objects
     return bpy.context.selected_objects
@@ -29,14 +33,25 @@ def import_fbx(file_path: str) -> list:
 def export_fbx(file_path: str) -> None:
     bpy.ops.export_scene.fbx(
         filepath=file_path,
+        # Include
         use_selection=True,
-        add_leaf_bones=False,
-        primary_bone_axis="Y",
-        axis_up="Y",
-        axis_forward="-Z",
-        bake_anim=True,
+        use_visible=False,
+        use_active_collection=False,
+        object_types={"EMPTY", "CAMERA", "LIGHT", "ARMATURE", "MESH", "OTHER"},
+        # Transform
         global_scale=1.0,
+        axis_forward="-Z",
+        axis_up="Y",
+        bake_space_transform=False,
+        # Armature
+        primary_bone_axis="Y",
+        secondary_bone_axis="X",
         use_armature_deform_only=True,
+        add_leaf_bones=False,
+        # Animation
+        bake_anim=True,
+        bake_anim_use_nla_strips=True,
+        bake_anim_use_all_actions=True,
     )
 
 
