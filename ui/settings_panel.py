@@ -52,6 +52,29 @@ class CBB_PT_blender_import_settings(PanelBasics, bpy.types.Panel):
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
+        addon_props = context.scene.cbb_fbx_settings
         layout = self.layout
-        col = layout.column(align=True)
-        col.label(text="Options for Blender FBX import")
+        box = layout.box()
+        box.label(text="Transform")
+        col = box.column(align=True)
+        col.prop(addon_props, "cbb_import_global_scale")
+        col.prop(addon_props, "cbb_import_apply_transform")
+        col.prop(addon_props, "cbb_import_manual_orientation")
+        col.prop(addon_props, "cbb_import_axis_forward")
+        col.prop(addon_props, "cbb_import_axis_up")
+
+        box = layout.box()
+        box.label(text="Animation")
+        col = box.column(align=True)
+        col.prop(addon_props, "cbb_import_use_anim")
+        col.prop(addon_props, "cbb_import_anim_offset")
+
+        box = layout.box()
+        box.label(text="Armature")
+        col = box.column(align=True)
+        col.prop(addon_props, "cbb_import_ignore_leaf_bones")
+        col.prop(addon_props, "cbb_import_force_connect_children")
+        col.prop(addon_props, "cbb_import_automatic_bone_orientation")
+        col.prop(addon_props, "cbb_import_primary_bone_axis")
+        col.prop(addon_props, "cbb_import_secondary_bone_axis")
+        col.prop(addon_props, "cbb_import_use_prepost_rot")

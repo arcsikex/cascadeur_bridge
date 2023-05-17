@@ -7,24 +7,25 @@ from ..utils.csc_handling import CascadeurHandler
 
 
 def import_fbx(file_path: str) -> list:
+    addon_props = bpy.context.scene.cbb_fbx_settings
     bpy.ops.import_scene.fbx(
         filepath=file_path,
         # Transform
-        global_scale=1.0,
-        bake_space_transform=False,  # Apply Transform
-        use_manual_orientation=False,
-        axis_forward="-Z",
-        axis_up="Y",
+        global_scale=addon_props.cbb_import_global_scale,
+        bake_space_transform=addon_props.cbb_import_apply_transform,
+        use_manual_orientation=addon_props.cbb_import_manual_orientation,
+        axis_forward=addon_props.cbb_import_axis_forward,
+        axis_up=addon_props.cbb_import_axis_up,
         # Animation
-        use_anim=True,
-        anim_offset=1.0,
+        use_anim=addon_props.cbb_import_use_anim,
+        anim_offset=addon_props.cbb_import_anim_offset,
         # Armature
-        ignore_leaf_bones=True,
-        force_connect_children=False,
-        automatic_bone_orientation=False,
-        primary_bone_axis="Y",
-        secondary_bone_axis="X",
-        use_prepost_rot=False,
+        ignore_leaf_bones=addon_props.cbb_import_ignore_leaf_bones,
+        force_connect_children=addon_props.cbb_import_force_connect_children,
+        automatic_bone_orientation=addon_props.cbb_import_automatic_bone_orientation,
+        primary_bone_axis=addon_props.cbb_import_primary_bone_axis,
+        secondary_bone_axis=addon_props.cbb_import_secondary_bone_axis,
+        use_prepost_rot=addon_props.cbb_import_use_prepost_rot,
     )
     # Return the list of imported objects
     return bpy.context.selected_objects
