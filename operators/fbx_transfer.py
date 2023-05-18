@@ -192,6 +192,8 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
                 actions = get_actions_from_objects(imported_objects)
                 apply_action(self.ao, actions[0])
                 delete_objects(imported_objects)
+                self.ao.select_set(True)
+                bpy.context.view_layer.objects.active = self.ao
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 

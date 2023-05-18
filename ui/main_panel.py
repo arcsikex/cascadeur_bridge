@@ -43,7 +43,9 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         row.label(text="Blender > Cascadeur")
         row.scale_y = 1.2
 
-        col.operator("cbb.export_blender_fbx", text="Export Selected", icon="EXPORT")
+        col.operator(
+            "cbb.export_blender_fbx", text="Export To Cascadeur", icon="EXPORT"
+        )
         # Cascadeur to Blender
         box = layout.box()
         col = box.column(align=True)
@@ -61,15 +63,3 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
             text="Import Scene",
             icon="IMPORT",
         )
-
-
-"""
-class CBB_PT_csc_to_blender(PanelBasics, bpy.types.Panel):
-    bl_idname = "CBB_PT_csc_to_blender"
-    bl_label = "Cascadeur -> Blender"
-    bl_parent_id = "CBB_PT_parent"
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column(align=True)
-"""

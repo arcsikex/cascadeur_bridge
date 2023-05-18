@@ -2,6 +2,8 @@
 
 Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur into your workflow with Blender.
 
+
+
 For a visual introduction watch the youtube video:
 
 [![Watch the video](https://img.youtube.com/vi/0muo9EPIPSE/default.jpg)](https://youtu.be/0muo9EPIPSE)
@@ -14,12 +16,15 @@ For a visual introduction watch the youtube video:
 - Export selected objects from Blender to Cascadeur
 - Import whole scene from Cascadeur
 - Import animation to selected armature
+- Configure Cascadeur FBX export settings
+- Configure Blender FBX import/export settings
 
 ## Installation
 
 To install Cascadeur Bridge, follow these steps:
 
-1. Download the [latest release](https://github.com/arcsikex/cascadeur_bridge/releases/tag/0.4) from the **releases**
+1. Download the [latest release](https://github.com/arcsikex/cascadeur_bridge/releases/tag/0.7.0) from the **releases**
+> If you are using Cascadeur version **2022.3.1 or older** use [Cascadeur Bridge 0.4.1](https://github.com/arcsikex/cascadeur_bridge/releases/tag/0.4.1)
 2. Open Blender and go to **Edit > Preferences**
 4. Click on the Add-ons tab, then click the Install button at the top of the window
 5. Select the downloaded zip
@@ -52,6 +57,5 @@ To remove the addon
 - Export action from Blender
 
 If you have more idea/request or you found a bug please report it in the **Issues**.
-
 
 ---
