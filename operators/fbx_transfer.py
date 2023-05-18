@@ -1,41 +1,57 @@
 import bpy
 
+from .addon_properties import get_csc_export_settings
 from ..utils import file_handling
 from ..utils.server_socket import ServerSocket
 from ..utils.csc_handling import CascadeurHandler
 
 
 def import_fbx(file_path: str) -> list:
+    addon_props = bpy.context.scene.cbb_fbx_settings
     bpy.ops.import_scene.fbx(
         filepath=file_path,
-        use_anim=True,
-        use_image_search=True,
-        force_connect_children=False,
-        automatic_bone_orientation=False,
-        use_prepost_rot=False,
-        ignore_leaf_bones=True,
-        primary_bone_axis="Y",
-        secondary_bone_axis="X",
-        global_scale=1.0,
-        use_manual_orientation=False,
-        axis_forward="-Z",
-        axis_up="Y",
+        # Transform
+        global_scale=addon_props.cbb_import_global_scale,
+        bake_space_transform=addon_props.cbb_import_apply_transform,
+        use_manual_orientation=addon_props.cbb_import_manual_orientation,
+        axis_forward=addon_props.cbb_import_axis_forward,
+        axis_up=addon_props.cbb_import_axis_up,
+        # Animation
+        use_anim=addon_props.cbb_import_use_anim,
+        anim_offset=addon_props.cbb_import_anim_offset,
+        # Armature
+        ignore_leaf_bones=addon_props.cbb_import_ignore_leaf_bones,
+        force_connect_children=addon_props.cbb_import_force_connect_children,
+        automatic_bone_orientation=addon_props.cbb_import_automatic_bone_orientation,
+        primary_bone_axis=addon_props.cbb_import_primary_bone_axis,
+        secondary_bone_axis=addon_props.cbb_import_secondary_bone_axis,
+        use_prepost_rot=addon_props.cbb_import_use_prepost_rot,
     )
     # Return the list of imported objects
     return bpy.context.selected_objects
 
 
 def export_fbx(file_path: str) -> None:
+    addon_props = bpy.context.scene.cbb_fbx_settings
     bpy.ops.export_scene.fbx(
         filepath=file_path,
-        use_selection=True,
-        add_leaf_bones=False,
-        primary_bone_axis="Y",
-        axis_up="Y",
-        axis_forward="-Z",
-        bake_anim=True,
-        global_scale=1.0,
-        use_armature_deform_only=True,
+        # Include
+        use_selection=addon_props.cbb_export_use_selection,
+        object_types=addon_props.cbb_export_object_types,
+        # Transform
+        global_scale=addon_props.cbb_export_global_scale,
+        axis_forward=addon_props.cbb_export_axis_forward,
+        axis_up=addon_props.cbb_export_axis_up,
+        bake_space_transform=addon_props.cbb_export_apply_transform,
+        # Armature
+        primary_bone_axis=addon_props.cbb_export_primary_bone_axis,
+        secondary_bone_axis=addon_props.cbb_export_secondary_bone_axis,
+        use_armature_deform_only=addon_props.cbb_export_deform_only,
+        add_leaf_bones=addon_props.cbb_export_leaf_bones,
+        # Animation
+        bake_anim=addon_props.cbb_export_bake_anim,
+        bake_anim_use_nla_strips=addon_props.cbb_export_use_nla_strips,
+        bake_anim_use_all_actions=addon_props.cbb_export_use_all_actions,
     )
 
 
@@ -98,7 +114,7 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
 
         self.file_path = file_handling.get_export_path()
         export_fbx(self.file_path)
-        CascadeurHandler().execute_csc_command("commands.externals.temp_importer.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_importer")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
@@ -121,6 +137,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
         self.server_socket.run()
 
         if self.server_socket.client_socket:
+            self.server_socket.send_message(get_csc_export_settings())
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
@@ -134,7 +151,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     def execute(self, context):
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
@@ -165,6 +182,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         self.server_socket.run()
 
         if self.server_socket.client_socket:
+            self.server_socket.send_message(get_csc_export_settings())
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
@@ -174,6 +192,8 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
                 actions = get_actions_from_objects(imported_objects)
                 apply_action(self.ao, actions[0])
                 delete_objects(imported_objects)
+                self.ao.select_set(True)
+                bpy.context.view_layer.objects.active = self.ao
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 
@@ -182,6 +202,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
     def execute(self, context):
         self.ao = bpy.context.active_object
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter.py")
+        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}

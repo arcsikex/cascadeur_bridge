@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Cascadeur Bridge for Blender",
     "author": "Aron Nemeth",
-    "version": (0, 4, 1),
+    "version": (0, 7, 0),
     "blender": (3, 5, 0),
     "location": "View3D > Panels > CSC Bridge",
     "description": "Helps you to integrate Cascadeur to your workflow with Belnder.",
@@ -60,10 +60,12 @@ classes = [CBB_preferences] + operators.classes + ui.classes
 
 
 def register():
+    operators.addon_properties.register_props()
     for cls in classes:
         bpy.utils.register_class(cls)
 
 
 def unregister():
+    operators.addon_properties.unregister_props()
     for cls in classes:
         bpy.utils.unregister_class(cls)

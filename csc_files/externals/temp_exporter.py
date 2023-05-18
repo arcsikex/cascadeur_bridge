@@ -21,20 +21,20 @@ def run(scene):
         .get_fbx_loader(scene_pr)
     )
     export_path = get_export_path()
-    fbx_scene_loader.set_settings(set_export_settings())
+    client = ClientSocket()
+    settings_dict = client.receive_message()
+    fbx_scene_loader.set_settings(set_export_settings(settings_dict))
     fbx_scene_loader.export_all_objects(export_path)
     scene.info(f"File exported to {export_path}")
-    client = ClientSocket()
+
     client.send_message(export_path)
     client.close()
 
 
 def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     settings = csc.fbx.FbxSettings()
-    if preferences.get("mode") == "Ascii":
-        settings.mode = csc.fbx.FbxSettingsMode.Ascii
-    else:
-        settings.mode = csc.fbx.FbxSettingsMode.Binary
+    settings.mode = csc.fbx.FbxSettingsMode.Binary
+
     if preferences.get("selected_interval"):
         settings.export_selected_interval = True
     else:
@@ -42,11 +42,15 @@ def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     if preferences.get("euler_filter"):
         settings.apply_euler_filter = True
     else:
-        settings.apply_euler_filter = True
+        settings.apply_euler_filter = False
     if preferences.get("up_axis") == "Z":
         settings.up_axis = csc.fbx.FbxSettingsAxis.Z
     else:
         settings.up_axis = csc.fbx.FbxSettingsAxis.Y
+    if not preferences.get("bake_animation"):
+        settings.bake_animation = False
+    else:
+        settings.bake_animation = True
     return settings
 
 

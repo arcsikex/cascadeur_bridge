@@ -4,6 +4,7 @@ import os
 
 from . import file_handling
 import bpy
+from ..addon_info import PACKAGE_NAME
 
 
 class CascadeurHandler:
@@ -21,7 +22,7 @@ class CascadeurHandler:
     @property
     def csc_exe_path_addon_preference(self) -> str:
         preferences = bpy.context.preferences
-        addon_prefs = preferences.addons["cascadeur_bridge"].preferences
+        addon_prefs = preferences.addons[PACKAGE_NAME].preferences
         return addon_prefs.csc_exe_path
 
     @property
@@ -56,11 +57,13 @@ class CascadeurHandler:
     def execute_csc_command(self, command: str) -> None:
         if platform.system() == "Windows":
             subprocess.Popen(
-                [self.csc_exe_path_addon_preference, command],
+                [self.csc_exe_path_addon_preference, "-run-script", command],
                 creationflags=subprocess.CREATE_NEW_CONSOLE,
             )
         else:
-            subprocess.Popen([self.csc_exe_path_addon_preference, command])
+            subprocess.Popen(
+                [self.csc_exe_path_addon_preference, "-run-script", command]
+            )
 
     @property
     def are_commands_installed(self) -> bool:

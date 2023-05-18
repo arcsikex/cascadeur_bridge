@@ -25,6 +25,7 @@ class ServerSocket:
         msg_length += b" " * (self._header - len(msg_length))
         # Sending the message
         self.client_socket.send(msg_length)
+        print(message)
         self.client_socket.send(message)
 
     def receive_message(self):
@@ -33,6 +34,7 @@ class ServerSocket:
         msg_length = int(msg_length)
         message = self.client_socket.recv(msg_length).decode(self._format)
         message = json.loads(message)
+        print(message)
         return message
 
     def run(self):

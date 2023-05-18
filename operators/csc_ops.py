@@ -4,8 +4,7 @@ import platform
 
 from ..utils import file_handling
 from ..utils.csc_handling import CascadeurHandler
-
-ADDON_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+from ..addon_info import ADDON_PATH
 
 
 class CBB_OT_start_cascadeur(bpy.types.Operator):
@@ -57,7 +56,8 @@ class CBB_OT_install_required_files(bpy.types.Operator):
             )
             if not result:
                 self.report(
-                    {"ERROR"}, "You don't have permission to copy the files for Cascadeur"
+                    {"ERROR"},
+                    "You don't have permission to copy the files for Cascadeur",
                 )
                 self.report({"INFO"}, "Restart Blender as Admin and try again")
                 return {"CANCELLED"}
