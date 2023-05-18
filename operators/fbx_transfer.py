@@ -32,27 +32,26 @@ def import_fbx(file_path: str) -> list:
 
 
 def export_fbx(file_path: str) -> None:
+    addon_props = bpy.context.scene.cbb_fbx_settings
     bpy.ops.export_scene.fbx(
         filepath=file_path,
         # Include
-        use_selection=True,
-        use_visible=False,
-        use_active_collection=False,
-        object_types={"EMPTY", "CAMERA", "LIGHT", "ARMATURE", "MESH", "OTHER"},
+        use_selection=addon_props.cbb_export_use_selection,
+        object_types=addon_props.cbb_export_object_types,
         # Transform
-        global_scale=1.0,
-        axis_forward="-Z",
-        axis_up="Y",
-        bake_space_transform=False,
+        global_scale=addon_props.cbb_export_global_scale,
+        axis_forward=addon_props.cbb_export_axis_forward,
+        axis_up=addon_props.cbb_export_axis_up,
+        bake_space_transform=addon_props.cbb_export_apply_transform,
         # Armature
-        primary_bone_axis="Y",
-        secondary_bone_axis="X",
-        use_armature_deform_only=True,
-        add_leaf_bones=False,
+        primary_bone_axis=addon_props.cbb_export_primary_bone_axis,
+        secondary_bone_axis=addon_props.cbb_export_secondary_bone_axis,
+        use_armature_deform_only=addon_props.cbb_export_deform_only,
+        add_leaf_bones=addon_props.cbb_export_leaf_bones,
         # Animation
-        bake_anim=True,
-        bake_anim_use_nla_strips=True,
-        bake_anim_use_all_actions=True,
+        bake_anim=addon_props.cbb_export_bake_anim,
+        bake_anim_use_nla_strips=addon_props.cbb_export_use_nla_strips,
+        bake_anim_use_all_actions=addon_props.cbb_export_use_all_actions,
     )
 
 

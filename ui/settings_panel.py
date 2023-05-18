@@ -40,9 +40,36 @@ class CBB_PT_blender_export_settings(PanelBasics, bpy.types.Panel):
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
+        addon_props = context.scene.cbb_fbx_settings
         layout = self.layout
-        col = layout.column(align=True)
-        col.label(text="Options for Blender FBX export")
+        box = layout.box()
+        box.label(text="Include")
+        col = box.column(align=True)
+        col.prop(addon_props, "cbb_export_use_selection")
+        col.prop(addon_props, "cbb_export_object_types")
+
+        box = layout.box()
+        box.label(text="Transform")
+        col = box.column(align=True)
+        col.prop(addon_props, "cbb_export_global_scale")
+        col.prop(addon_props, "cbb_export_axis_forward")
+        col.prop(addon_props, "cbb_export_axis_up")
+        col.prop(addon_props, "cbb_export_apply_transform")
+
+        box = layout.box()
+        box.label(text="Armature")
+        col = box.column(align=True)
+        col.prop(addon_props, "cbb_export_primary_bone_axis")
+        col.prop(addon_props, "cbb_export_secondary_bone_axis")
+        col.prop(addon_props, "cbb_export_deform_only")
+        col.prop(addon_props, "cbb_export_leaf_bones")
+
+        box = layout.box()
+        box.label(text="Animation")
+        col = box.column(align=True)
+        col.prop(addon_props, "cbb_export_bake_anim")
+        col.prop(addon_props, "cbb_export_use_nla_strips")
+        col.prop(addon_props, "cbb_export_use_all_actions")
 
 
 class CBB_PT_blender_import_settings(PanelBasics, bpy.types.Panel):

@@ -113,6 +113,100 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
         default=False,
     )
 
+    # Blender Export settings
+    cbb_export_use_selection: bpy.props.BoolProperty(
+        name="Selected Objects",
+        description="Export selected and visible objects only",
+        default=True,
+    )
+
+    cbb_export_object_types: bpy.props.EnumProperty(
+        name="Object Types",
+        options={"ENUM_FLAG"},
+        items=(
+            ("EMPTY", "Empty", ""),
+            ("CAMERA", "Camera", ""),
+            ("LIGHT", "Lamp", ""),
+            ("ARMATURE", "Armature", "WARNING: not supported in dupli/group instances"),
+            ("MESH", "Mesh", ""),
+            (
+                "OTHER",
+                "Other",
+                "Other geometry types, like curve, metaball, etc. (converted to meshes)",
+            ),
+        ),
+        description="Which kind of object to export",
+        default={"EMPTY", "CAMERA", "LIGHT", "ARMATURE", "MESH", "OTHER"},
+    )
+
+    cbb_export_global_scale: bpy.props.FloatProperty(
+        name="Global Scale", description="Scale", default=1.0, min=0.001, max=1000
+    )
+
+    cbb_export_axis_forward: bpy.props.EnumProperty(
+        items=generate_items(["X", "Y", "Z", "-X", "-Y", "-Z"]),
+        name="Forward",
+        description="Forward Axis",
+        default="-Z",
+    )
+
+    cbb_export_axis_up: bpy.props.EnumProperty(
+        items=generate_items(["X", "Y", "Z", "-X", "-Y", "-Z"]),
+        name="Up",
+        description="Forward Up",
+        default="Y",
+    )
+
+    cbb_export_apply_transform: bpy.props.BoolProperty(
+        name="Apply Transform",
+        description="Bake space transform into object data. EXPERIMENTAL!",
+        default=False,
+    )
+
+    cbb_export_primary_bone_axis: bpy.props.EnumProperty(
+        items=generate_items(["X", "Y", "Z", "-X", "-Y", "-Z"]),
+        name="Primary Bone Axis",
+        description="",
+        default="Y",
+    )
+
+    cbb_export_secondary_bone_axis: bpy.props.EnumProperty(
+        items=generate_items(["X", "Y", "Z", "-X", "-Y", "-Z"]),
+        name="Secondary Bone Axis",
+        description="",
+        default="X",
+    )
+
+    cbb_export_deform_only: bpy.props.BoolProperty(
+        name="Only Deform Bones",
+        description="Only write deforming bones",
+        default=True,
+    )
+
+    cbb_export_leaf_bones: bpy.props.BoolProperty(
+        name="Add Leaf Bones",
+        description="Append a final bone to the end of each chain to specify last bone length",
+        default=False,
+    )
+
+    cbb_export_bake_anim: bpy.props.BoolProperty(
+        name="Baked Animation",
+        description="Export baked keyframe animation",
+        default=True,
+    )
+
+    cbb_export_use_nla_strips: bpy.props.BoolProperty(
+        name="NLA Strips",
+        description="Export each non-muted NLA strip as a separated FBX’s AnimStack, if any, instead of global scene animation",
+        default=False,
+    )
+
+    cbb_export_use_all_actions: bpy.props.BoolProperty(
+        name="All Actions",
+        description="Export each action as a separated FBX’s AnimStack, instead of global scene animation",
+        default=False,
+    )
+
 
 def register_props():
     bpy.utils.register_class(CBB_PG_fbx_settings)
