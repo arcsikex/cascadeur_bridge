@@ -46,20 +46,5 @@ class CBB_OT_install_required_files(bpy.types.Operator):
             )
             self.report({"INFO"}, "Restart Blender as Admin and try again")
             return {"CANCELLED"}
-
-        # Copy DLLs
-        if platform.system() == "Windows":
-            dlls_source = os.path.join(ADDON_PATH, "csc_files")
-            dlls_path = os.path.join(ch.csc_dir, "python", "DLLs")
-            result = file_handling.copy_files(
-                dlls_source, dlls_path, ch.required_dlls, overwrite=False
-            )
-            if not result:
-                self.report(
-                    {"ERROR"},
-                    "You don't have permission to copy the files for Cascadeur",
-                )
-                self.report({"INFO"}, "Restart Blender as Admin and try again")
-                return {"CANCELLED"}
         self.report({"INFO"}, "All necessary files have been successfully copied")
         return {"FINISHED"}
