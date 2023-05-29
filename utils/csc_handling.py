@@ -14,10 +14,6 @@ class CascadeurHandler:
         "temp_importer.py",
         "client_socket.py",
     ]
-    required_dlls = [
-        "_socket.pyd",
-        "select.pyd",
-    ]
 
     @property
     def csc_exe_path_addon_preference(self) -> str:
@@ -70,15 +66,6 @@ class CascadeurHandler:
         for file in self.required_scripts:
             if not file_handling.file_exists(
                 os.path.join(self.commands_path, "externals", file)
-            ):
-                return False
-        return True
-
-    @property
-    def are_dlls_installed(self) -> bool:
-        for file in self.required_dlls:
-            if not file_handling.file_exists(
-                os.path.join(self.csc_dir, "python", "DLLs", file)
             ):
                 return False
         return True

@@ -141,7 +141,6 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
-                file_handling.wait_for_file(data)
                 import_fbx(data)
                 file_handling.delete_file(data)
                 self.report({"INFO"}, "Finished")
@@ -186,7 +185,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
-                file_handling.wait_for_file(data)
                 imported_objects = import_fbx(data)
                 file_handling.delete_file(data)
                 actions = get_actions_from_objects(imported_objects)
