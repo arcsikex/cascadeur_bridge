@@ -46,7 +46,6 @@ To remove the addon
 - from **Blender** go to **Edit > Preferences > Add-ons** and click on the Remove button of the add-on.
 - from **Cascadeur** 
     - go to your commands folder (*CASCADEUR PATH\resources\scripts\python\commands*) and delete the ***externals*** folder. 
-    - go to *CASCADEUR PATH\python\DLLs* and delete the ***_socket.pyd*** and ***select.pyd*** files. (These files might be included in the official Cascadeur install in the future!)
 
 ## Future plans:
 - Make fbx import/export settings section

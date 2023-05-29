@@ -23,7 +23,7 @@ class CBB_OT_start_cascadeur(bpy.types.Operator):
 
 
 class CBB_OT_install_required_files(bpy.types.Operator):
-    """Copy the necessary DLLs and python script to Cascadeurs folder"""
+    """Copy the necessary python script to Cascadeurs folder"""
 
     bl_idname = "cbb.install_required_files"
     bl_label = "Install Required Files"
