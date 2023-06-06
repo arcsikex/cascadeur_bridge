@@ -99,11 +99,13 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
 
     def __del__(self):
         self.server_socket.close()
-        global operation_in_progress
+        global operation_completed
         operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
+            global operation_completed
+            operation_completed = True
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -122,12 +124,17 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
-        global operation_in_progress
+        global operation_completed
         operation_completed = False
         self.server_socket = ServerSocket()
 
         self.file_path = file_handling.get_export_path()
-        export_fbx(self.file_path)
+        try:
+            export_fbx(self.file_path)
+        except Exception as e:
+            self.report({"ERROR"}, "Couldn't export fbx file")
+            operation_completed = True
+            return {"CANCELLED"}
         CascadeurHandler().execute_csc_command("commands.externals.temp_importer")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
@@ -147,11 +154,13 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     def __del__(self):
         self.server_socket.close()
-        global operation_in_progress
+        global operation_completed
         operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
+            global operation_completed
+            operation_completed = True
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -169,7 +178,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
-        global operation_in_progress
+        global operation_completed
         operation_completed = False
         self.server_socket = ServerSocket()
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
@@ -196,11 +205,13 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
 
     def __del__(self):
         self.server_socket.close()
-        global operation_in_progress
+        global operation_completed
         operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
+            global operation_completed
+            operation_completed = True
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -224,7 +235,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
-        global operation_in_progress
+        global operation_completed
         operation_completed = False
         self.ao = bpy.context.active_object
         self.server_socket = ServerSocket()
