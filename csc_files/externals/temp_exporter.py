@@ -1,7 +1,6 @@
 import csc
 
 import tempfile
-import time
 import os
 
 from .client_socket import ClientSocket
@@ -20,7 +19,7 @@ def run(scene):
         .get_tool("FbxSceneLoader")
         .get_fbx_loader(scene_pr)
     )
-    export_path = get_export_path()
+    export_path = get_export_path(scene_pr.name())
     client = ClientSocket()
     settings_dict = client.receive_message()
     fbx_scene_loader.set_settings(set_export_settings(settings_dict))
@@ -54,7 +53,7 @@ def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     return settings
 
 
-def get_export_path() -> str:
+def get_export_path(scene_name) -> str:
     temp_dir = tempfile.gettempdir()
-    current_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
-    return os.path.join(temp_dir, f"temp_export_{current_time}.fbx")
+    file_name = scene_name.replace(".casc", "")
+    return os.path.join(temp_dir, file_name)
