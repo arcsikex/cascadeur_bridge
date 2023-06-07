@@ -7,6 +7,16 @@ import bpy
 from ..addon_info import PACKAGE_NAME
 
 
+def get_default_csc_exe_path() -> str:
+    csc_path = {
+        "Windows": r"C:\Program Files\Cascadeur\cascadeur.exe",
+        "Linux": r"/opt/cascadeur/cascadeur",
+        "Darwin": r"Applications/Cascadeur.app",
+    }
+    default = csc_path.get(platform.system(), "")
+    return default if file_handling.file_exists(default) else ""
+
+
 class CascadeurHandler:
     required_scripts = [
         "__init__.py",
@@ -24,7 +34,11 @@ class CascadeurHandler:
     @property
     def csc_dir(self) -> str:
         if self.is_csc_exe_path_valid:
-            return os.path.dirname(self.csc_exe_path_addon_preference)
+            return (
+                self.csc_exe_path_addon_preference
+                if platform.system() == "Darwin"
+                else os.path.dirname(self.csc_exe_path_addon_preference)
+            )
 
     @property
     def is_csc_exe_path_valid(self) -> bool:
@@ -33,7 +47,12 @@ class CascadeurHandler:
 
     @property
     def commands_path(self) -> str:
-        commands_config = os.path.join(self.csc_dir, "resources", "settings.ini")
+        resources_dir = (
+            os.path.join(self.csc_dir, "Contents", "MacOS", "resources")
+            if platform.system() == "Darwin"
+            else os.path.join(self.csc_dir, "resources")
+        )
+        commands_config = os.path.join(resources_dir, "settings.ini")
         with open(commands_config, "r") as f:
             for line in f:
                 if line.startswith("ScriptsDir"):
@@ -42,24 +61,14 @@ class CascadeurHandler:
         if scripts_dir:
             return scripts_dir
         else:
-            return os.path.join(
-                self.csc_dir, "resources", "scripts", "python", "commands"
-            )
+            return os.path.join(resources_dir, "scripts", "python", "commands")
 
     def start_cascadeur(self) -> None:
         csc_path = self.csc_exe_path_addon_preference
         subprocess.Popen([csc_path])
 
     def execute_csc_command(self, command: str) -> None:
-        if platform.system() == "Windows":
-            subprocess.Popen(
-                [self.csc_exe_path_addon_preference, "-run-script", command],
-                creationflags=subprocess.CREATE_NEW_CONSOLE,
-            )
-        else:
-            subprocess.Popen(
-                [self.csc_exe_path_addon_preference, "-run-script", command]
-            )
+        subprocess.Popen([self.csc_exe_path_addon_preference, "-run-script", command])
 
     @property
     def are_commands_installed(self) -> bool:

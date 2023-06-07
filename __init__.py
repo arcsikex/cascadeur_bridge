@@ -20,27 +20,17 @@ else:
     importlib.reload(ui)
 
 import bpy
-import platform
 
-from .utils import file_handling
+from .utils.csc_handling import get_default_csc_exe_path
 
 
 class CBB_preferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
-    @staticmethod
-    def default_csc_exe_path() -> str:
-        csc_path = {
-            "Windows": r"C:\Program Files\Cascadeur\cascadeur.exe",
-            "Linux": r"/opt/cascadeur/cascadeur",
-        }
-        default = csc_path.get(platform.system(), "")
-        return default if file_handling.file_exists(default) else ""
-
     csc_exe_path: bpy.props.StringProperty(
         name="Cascadeur executable",
         subtype="FILE_PATH",
-        default=default_csc_exe_path(),
+        default=get_default_csc_exe_path(),
     )
 
     def draw(self, context):
