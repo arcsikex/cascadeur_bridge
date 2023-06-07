@@ -24,7 +24,11 @@ class CascadeurHandler:
     @property
     def csc_dir(self) -> str:
         if self.is_csc_exe_path_valid:
-            return os.path.dirname(self.csc_exe_path_addon_preference)
+            return (
+                self.csc_exe_path_addon_preference
+                if platform.system() == "Darwin"
+                else os.path.dirname(self.csc_exe_path_addon_preference)
+            )
 
     @property
     def is_csc_exe_path_valid(self) -> bool:
@@ -33,7 +37,12 @@ class CascadeurHandler:
 
     @property
     def commands_path(self) -> str:
-        commands_config = os.path.join(self.csc_dir, "resources", "settings.ini")
+        resources_dir = (
+            os.path.join(self.csc_dir, "Contents", "MacOS", "resources")
+            if platform.system() == "Darwin"
+            else os.path.join(self.csc_dir, "resources")
+        )
+        commands_config = os.path.join(resources_dir, "settings.ini")
         with open(commands_config, "r") as f:
             for line in f:
                 if line.startswith("ScriptsDir"):
@@ -42,9 +51,7 @@ class CascadeurHandler:
         if scripts_dir:
             return scripts_dir
         else:
-            return os.path.join(
-                self.csc_dir, "resources", "scripts", "python", "commands"
-            )
+            return os.path.join(resources_dir, "scripts", "python", "commands")
 
     def start_cascadeur(self) -> None:
         csc_path = self.csc_exe_path_addon_preference
