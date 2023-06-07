@@ -67,15 +67,7 @@ class CascadeurHandler:
         subprocess.Popen([csc_path])
 
     def execute_csc_command(self, command: str) -> None:
-        if platform.system() == "Windows":
-            subprocess.Popen(
-                [self.csc_exe_path_addon_preference, "-run-script", command],
-                creationflags=subprocess.CREATE_NEW_CONSOLE,
-            )
-        else:
-            subprocess.Popen(
-                [self.csc_exe_path_addon_preference, "-run-script", command]
-            )
+        subprocess.Popen([self.csc_exe_path_addon_preference, "-run-script", command])
 
     @property
     def are_commands_installed(self) -> bool:
