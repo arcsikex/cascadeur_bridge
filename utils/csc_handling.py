@@ -11,6 +11,7 @@ def get_default_csc_exe_path() -> str:
     csc_path = {
         "Windows": r"C:\Program Files\Cascadeur\cascadeur.exe",
         "Linux": r"/opt/cascadeur/cascadeur",
+        "Darwin": r"Applications/Cascadeur.app",
     }
     default = csc_path.get(platform.system(), "")
     return default if file_handling.file_exists(default) else ""
