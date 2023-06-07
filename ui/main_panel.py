@@ -1,6 +1,6 @@
 import bpy
 from ..utils.csc_handling import CascadeurHandler
-from ..operators import fbx_transfer
+from .. import addon_info
 
 
 class PanelBasics:
@@ -36,7 +36,7 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         row.scale_y = 1.5
         col.separator()
 
-        if not fbx_transfer.operation_completed:
+        if not addon_info.operation_completed:
             col.label(icon="LOCKED", text="Operation in progress!")
             col.separator()
 
