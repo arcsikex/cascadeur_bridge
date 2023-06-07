@@ -4,6 +4,9 @@ from .addon_properties import get_csc_export_settings
 from ..utils import file_handling
 from ..utils.server_socket import ServerSocket
 from ..utils.csc_handling import CascadeurHandler
+from .. import addon_info
+
+import os
 
 
 def import_fbx(file_path: str) -> list:
@@ -71,8 +74,8 @@ def delete_objects(objects: list) -> None:
     bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
 
 
-def apply_action(armature, action) -> None:
-    action.name = "cascadeur_action"
+def apply_action(armature, action, action_name="cascadeur_action") -> None:
+    action.name = action_name
     if not hasattr(armature.animation_data, "action"):
         armature.animation_data_create()
     armature.animation_data.action = action
@@ -87,11 +90,17 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
     server_socket = None
     file_path = None
 
+    @classmethod
+    def poll(cls, context):
+        return addon_info.operation_completed
+
     def __del__(self):
         self.server_socket.close()
+        addon_info.operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
+            addon_info.operation_completed = True
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -110,10 +119,16 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
+        addon_info.operation_completed = False
         self.server_socket = ServerSocket()
 
         self.file_path = file_handling.get_export_path()
-        export_fbx(self.file_path)
+        try:
+            export_fbx(self.file_path)
+        except Exception as e:
+            self.report({"ERROR"}, "Couldn't export fbx file")
+            addon_info.operation_completed = True
+            return {"CANCELLED"}
         CascadeurHandler().execute_csc_command("commands.externals.temp_importer")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
@@ -127,11 +142,17 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     server_socket = None
 
+    @classmethod
+    def poll(cls, context):
+        return addon_info.operation_completed
+
     def __del__(self):
         self.server_socket.close()
+        addon_info.operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
+            addon_info.operation_completed = True
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -149,6 +170,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
+        addon_info.operation_completed = False
         self.server_socket = ServerSocket()
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
         context.window_manager.modal_handler_add(self)
@@ -169,13 +191,16 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             context.active_object
             and context.selected_objects
             and context.active_object.type == "ARMATURE"
+            and addon_info.operation_completed
         )
 
     def __del__(self):
         self.server_socket.close()
+        addon_info.operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
+            addon_info.operation_completed = True
             return {"CANCELLED"}
 
         self.server_socket.run()
@@ -186,9 +211,10 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             if data:
                 print(str(data))
                 imported_objects = import_fbx(data)
+                scene_name = os.path.splitext(os.path.basename(data))[0]
                 file_handling.delete_file(data)
                 actions = get_actions_from_objects(imported_objects)
-                apply_action(self.ao, actions[0])
+                apply_action(self.ao, actions[0], scene_name)
                 delete_objects(imported_objects)
                 self.ao.select_set(True)
                 bpy.context.view_layer.objects.active = self.ao
@@ -198,6 +224,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
+        addon_info.operation_completed = False
         self.ao = bpy.context.active_object
         self.server_socket = ServerSocket()
         CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")

@@ -1,6 +1,5 @@
 import bpy
 import os
-import platform
 
 from ..utils import file_handling
 from ..utils.csc_handling import CascadeurHandler
