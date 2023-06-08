@@ -72,7 +72,13 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         col.label(text="Batch import")
         props = col.operator(
             "cbb.import_cascadeur_action",
-            text="Import All Action",
-            icon="ARMATURE_DATA",
+            text="Import All Actions",
+            icon="CON_ARMATURE",
+        )
+        props.batch_export = True
+        props = col.operator(
+            "cbb.import_cascadeur_fbx",
+            text="Import All Scenes",
+            icon="DOCUMENTS",
         )
         props.batch_export = True

@@ -146,6 +146,12 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     def poll(cls, context):
         return addon_info.operation_completed
 
+    batch_export: bpy.props.BoolProperty(
+        name="Import all scene",
+        description="",
+        default=False,
+    )
+
     def __del__(self):
         self.server_socket.close()
         addon_info.operation_completed = True
@@ -162,8 +168,14 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
-                import_fbx(data)
-                file_handling.delete_file(data)
+                if not isinstance(data, list):
+                    self.report({"ERROR"}, f"Unexpected response: {str(data)}")
+                    addon_info.operation_completed = True
+                    return {"CANCELLED"}
+
+                for file in data:
+                    import_fbx(file)
+                    file_handling.delete_file(file)
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 
@@ -172,7 +184,8 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     def execute(self, context):
         addon_info.operation_completed = False
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
+        command_file = "temp_batch_exporter" if self.batch_export else "temp_exporter"
+        CascadeurHandler().execute_csc_command(f"commands.externals.{command_file}")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
