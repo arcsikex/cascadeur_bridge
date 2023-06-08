@@ -67,3 +67,12 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
             text="Import Scene",
             icon="IMPORT",
         )
+        # Batch
+        col = box.column(align=True)
+        col.label(text="Batch import")
+        props = col.operator(
+            "cbb.import_cascadeur_action",
+            text="Import All Action",
+            icon="ARMATURE_DATA",
+        )
+        props.batch_export = True

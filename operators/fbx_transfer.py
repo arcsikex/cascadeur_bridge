@@ -194,6 +194,12 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             and addon_info.operation_completed
         )
 
+    batch_export: bpy.props.BoolProperty(
+        name="Import all scene",
+        description="",
+        default=False,
+    )
+
     def __del__(self):
         self.server_socket.close()
         addon_info.operation_completed = True
@@ -210,12 +216,18 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
-                imported_objects = import_fbx(data)
-                scene_name = os.path.splitext(os.path.basename(data))[0]
-                file_handling.delete_file(data)
-                actions = get_actions_from_objects(imported_objects)
+                if not isinstance(data, list):
+                    self.report({"ERROR"}, f"Unexpected response: {str(data)}")
+                    addon_info.operation_completed = True
+                    return {"CANCELLED"}
+
+                for file in data:
+                    imported_objects = import_fbx(file)
+                    scene_name = os.path.splitext(os.path.basename(file))[0]
+                    file_handling.delete_file(file)
+                    actions = get_actions_from_objects(imported_objects)
+                    delete_objects(imported_objects)
                 apply_action(self.ao, actions[0], scene_name)
-                delete_objects(imported_objects)
                 self.ao.select_set(True)
                 bpy.context.view_layer.objects.active = self.ao
                 self.report({"INFO"}, "Finished")
@@ -227,6 +239,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         addon_info.operation_completed = False
         self.ao = bpy.context.active_object
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
+        command_file = "temp_batch_exporter" if self.batch_export else "temp_exporter"
+        CascadeurHandler().execute_csc_command(f"commands.externals.{command_file}")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
