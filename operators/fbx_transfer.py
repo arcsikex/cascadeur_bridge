@@ -64,7 +64,6 @@ def get_actions_from_objects(selected_objects: list) -> list:
         if obj.type == "ARMATURE" and obj.animation_data.action:
             action = obj.animation_data.action
             actions.append(action)
-            bpy.data.actions.append(action)
     return actions
 
 
