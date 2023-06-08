@@ -23,6 +23,8 @@ class CascadeurHandler:
         "temp_exporter.py",
         "temp_importer.py",
         "client_socket.py",
+        "commons.py",
+        "temp_batch_exporter.py",
     ]
 
     @property

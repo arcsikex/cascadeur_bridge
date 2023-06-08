@@ -61,8 +61,10 @@ def export_fbx(file_path: str) -> None:
 def get_actions_from_objects(selected_objects: list) -> list:
     actions = []
     for obj in selected_objects:
-        if obj.type == "ARMATURE":
-            actions.append(obj.animation_data.action)
+        if obj.type == "ARMATURE" and obj.animation_data.action:
+            action = obj.animation_data.action
+            actions.append(action)
+            bpy.data.actions.append(action)
     return actions
 
 
@@ -197,6 +199,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
     bl_label = "Import Cascadeur Action"
 
     ao = None
+    imported_objects = []
 
     @classmethod
     def poll(cls, context):
@@ -235,12 +238,14 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
                     return {"CANCELLED"}
 
                 for file in data:
-                    imported_objects = import_fbx(file)
+                    objects = import_fbx(file)
+                    self.imported_objects.extend(objects)
                     scene_name = os.path.splitext(os.path.basename(file))[0]
                     file_handling.delete_file(file)
-                    actions = get_actions_from_objects(imported_objects)
-                    delete_objects(imported_objects)
-                apply_action(self.ao, actions[0], scene_name)
+                    actions = get_actions_from_objects(objects)
+                    apply_action(self.ao, actions[0], scene_name)
+                delete_objects(self.imported_objects)
+
                 self.ao.select_set(True)
                 bpy.context.view_layer.objects.active = self.ao
                 self.report({"INFO"}, "Finished")
