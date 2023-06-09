@@ -58,12 +58,15 @@ def export_fbx(file_path: str) -> None:
     )
 
 
-def get_actions_from_objects(selected_objects: list) -> list:
+def get_actions_from_armatures(selected_objects: list) -> list:
     actions = []
     for obj in selected_objects:
         if obj.type == "ARMATURE" and obj.animation_data.action:
             action = obj.animation_data.action
             actions.append(action)
+        elif obj.type != "ARMATURE" and obj.animation_data.action:
+            action = obj.animation_data.action
+            bpy.data.actions.remove(action)
     return actions
 
 
@@ -241,7 +244,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
                     self.imported_objects.extend(objects)
                     scene_name = os.path.splitext(os.path.basename(file))[0]
                     file_handling.delete_file(file)
-                    actions = get_actions_from_objects(objects)
+                    actions = get_actions_from_armatures(objects)
                     apply_action(self.ao, actions[0], scene_name)
                 delete_objects(self.imported_objects)
 
