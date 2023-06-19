@@ -18,15 +18,6 @@ def get_default_csc_exe_path() -> str:
 
 
 class CascadeurHandler:
-    required_scripts = [
-        "__init__.py",
-        "temp_exporter.py",
-        "temp_importer.py",
-        "client_socket.py",
-        "commons.py",
-        "temp_batch_exporter.py",
-    ]
-
     @property
     def csc_exe_path_addon_preference(self) -> str:
         preferences = bpy.context.preferences
@@ -71,12 +62,3 @@ class CascadeurHandler:
 
     def execute_csc_command(self, command: str) -> None:
         subprocess.Popen([self.csc_exe_path_addon_preference, "-run-script", command])
-
-    @property
-    def are_commands_installed(self) -> bool:
-        for file in self.required_scripts:
-            if not file_handling.file_exists(
-                os.path.join(self.commands_path, "externals", file)
-            ):
-                return False
-        return True
