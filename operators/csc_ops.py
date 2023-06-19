@@ -38,7 +38,7 @@ class CBB_OT_install_required_files(bpy.types.Operator):
         commands_source = os.path.join(addon_info.ADDON_PATH, "csc_files", "externals")
         commands_path = os.path.join(ch.commands_path, "externals")
         result = file_handling.copy_files(
-            commands_source, commands_path, ch.required_scripts
+            commands_source, commands_path, os.listdir(commands_source)
         )
         if not result:
             self.report(
