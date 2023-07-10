@@ -58,11 +58,15 @@ def export_fbx(file_path: str) -> None:
     )
 
 
-def get_actions_from_objects(selected_objects: list) -> list:
+def get_actions_from_armatures(selected_objects: list) -> list:
     actions = []
     for obj in selected_objects:
-        if obj.type == "ARMATURE":
-            actions.append(obj.animation_data.action)
+        if obj.type == "ARMATURE" and obj.animation_data.action:
+            action = obj.animation_data.action
+            actions.append(action)
+        elif obj.type != "ARMATURE" and obj.animation_data.action:
+            action = obj.animation_data.action
+            bpy.data.actions.remove(action)
     return actions
 
 
@@ -146,6 +150,12 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     def poll(cls, context):
         return addon_info.operation_completed
 
+    batch_export: bpy.props.BoolProperty(
+        name="Import all scene",
+        description="",
+        default=False,
+    )
+
     def __del__(self):
         self.server_socket.close()
         addon_info.operation_completed = True
@@ -162,8 +172,14 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
-                import_fbx(data)
-                file_handling.delete_file(data)
+                if not isinstance(data, list):
+                    self.report({"ERROR"}, f"Unexpected response: {str(data)}")
+                    addon_info.operation_completed = True
+                    return {"CANCELLED"}
+
+                for file in data:
+                    import_fbx(file)
+                    file_handling.delete_file(file)
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
 
@@ -172,7 +188,8 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     def execute(self, context):
         addon_info.operation_completed = False
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
+        command_file = "temp_batch_exporter" if self.batch_export else "temp_exporter"
+        CascadeurHandler().execute_csc_command(f"commands.externals.{command_file}")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
@@ -184,6 +201,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
     bl_label = "Import Cascadeur Action"
 
     ao = None
+    imported_objects = []
 
     @classmethod
     def poll(cls, context):
@@ -193,6 +211,12 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             and context.active_object.type == "ARMATURE"
             and addon_info.operation_completed
         )
+
+    batch_export: bpy.props.BoolProperty(
+        name="Import all scene",
+        description="",
+        default=False,
+    )
 
     def __del__(self):
         self.server_socket.close()
@@ -210,12 +234,20 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             data = self.server_socket.receive_message()
             if data:
                 print(str(data))
-                imported_objects = import_fbx(data)
-                scene_name = os.path.splitext(os.path.basename(data))[0]
-                file_handling.delete_file(data)
-                actions = get_actions_from_objects(imported_objects)
-                apply_action(self.ao, actions[0], scene_name)
-                delete_objects(imported_objects)
+                if not isinstance(data, list):
+                    self.report({"ERROR"}, f"Unexpected response: {str(data)}")
+                    addon_info.operation_completed = True
+                    return {"CANCELLED"}
+
+                for file in data:
+                    objects = import_fbx(file)
+                    self.imported_objects.extend(objects)
+                    scene_name = os.path.splitext(os.path.basename(file))[0]
+                    file_handling.delete_file(file)
+                    actions = get_actions_from_armatures(objects)
+                    apply_action(self.ao, actions[0], scene_name)
+                delete_objects(self.imported_objects)
+
                 self.ao.select_set(True)
                 bpy.context.view_layer.objects.active = self.ao
                 self.report({"INFO"}, "Finished")
@@ -227,6 +259,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         addon_info.operation_completed = False
         self.ao = bpy.context.active_object
         self.server_socket = ServerSocket()
-        CascadeurHandler().execute_csc_command("commands.externals.temp_exporter")
+        command_file = "temp_batch_exporter" if self.batch_export else "temp_exporter"
+        CascadeurHandler().execute_csc_command(f"commands.externals.{command_file}")
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
