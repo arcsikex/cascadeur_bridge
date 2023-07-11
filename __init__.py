@@ -20,8 +20,8 @@ else:
     importlib.reload(ui)
 
 import bpy
-from .addon_info import panel_name
 
+from .utils import config_handling
 from .utils.csc_handling import get_default_csc_exe_path
 
 
@@ -36,7 +36,8 @@ def update_all_tab_names(self, context):
     # Set panel name for base class
     new_name = bpy.context.preferences.addons[__name__].preferences.csc_tab_name
     ui.main_panel.PanelBasics.bl_category = new_name
-    # TODO: Write name to config file
+    # Save to file
+    config_handling.set_panel_name(new_name)
 
     # Register everything
     for c in ui.classes:
@@ -55,6 +56,7 @@ class CBB_preferences(bpy.types.AddonPreferences):
     csc_tab_name: bpy.props.StringProperty(
         name="N Panel Name",
         description="Name of the add-on on the N Panel",
+        default=config_handling.get_panel_name(),
         update=update_all_tab_names,
     )
 

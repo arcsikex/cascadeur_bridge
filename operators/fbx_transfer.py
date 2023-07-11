@@ -95,7 +95,10 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
     file_path = None
 
     def __del__(self):
-        self.server_socket.close()
+        try:
+            self.server_socket.close()
+        except AttributeError:
+            pass
         addon_info.operation_completed = True
 
     def modal(self, context, event):
@@ -149,7 +152,10 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     )
 
     def __del__(self):
-        self.server_socket.close()
+        try:
+            self.server_socket.close()
+        except AttributeError:
+            pass
         addon_info.operation_completed = True
 
     def modal(self, context, event):
@@ -210,7 +216,10 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
     )
 
     def __del__(self):
-        self.server_socket.close()
+        try:
+            self.server_socket.close()
+        except AttributeError:
+            pass
         addon_info.operation_completed = True
 
     def modal(self, context, event):

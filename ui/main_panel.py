@@ -1,12 +1,13 @@
 import bpy
 from ..utils.csc_handling import CascadeurHandler
+from ..utils.config_handling import get_panel_name
 from .. import addon_info
 
 
 class PanelBasics:
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_category = "CSC Bridge"  # TODO: Read from config file
+    bl_category = get_panel_name()
 
 
 class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
