@@ -6,7 +6,7 @@ from .. import addon_info
 class PanelBasics:
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_category = "CSC Bridge"
+    bl_category = "CSC Bridge"  # TODO: Read from config file
 
 
 class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):

@@ -94,10 +94,6 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
     server_socket = None
     file_path = None
 
-    @classmethod
-    def poll(cls, context):
-        return addon_info.operation_completed
-
     def __del__(self):
         self.server_socket.close()
         addon_info.operation_completed = True
@@ -145,10 +141,6 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     bl_label = "Import Cascadeur Scene"
 
     server_socket = None
-
-    @classmethod
-    def poll(cls, context):
-        return addon_info.operation_completed
 
     batch_export: bpy.props.BoolProperty(
         name="Import all scene",
@@ -209,7 +201,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
             context.active_object
             and context.selected_objects
             and context.active_object.type == "ARMATURE"
-            and addon_info.operation_completed
         )
 
     batch_export: bpy.props.BoolProperty(
