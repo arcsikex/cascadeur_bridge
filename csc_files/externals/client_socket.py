@@ -31,4 +31,7 @@ class ClientSocket:
         return message
 
     def close(self):
-        self.client_socket.close()
+        try:
+            self.client_socket.close()
+        except:
+            pass
