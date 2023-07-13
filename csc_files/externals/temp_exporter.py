@@ -24,16 +24,10 @@ def run(scene):
         scene.error(f"Couldn't create socket. Error: {e}")
         client.close()
         return
-    try:
-        settings_dict = client.receive_message()
-    except Exception as e:
-        scene.warning("Couldn't get fbx export settings, using default.")
-        settings_dict = {}
+
+    settings_dict = client.receive_message()
     fbx_scene_loader.set_settings(commons.set_export_settings(settings_dict))
     fbx_scene_loader.export_all_objects(export_path)
     scene.info(f"File exported to {export_path}")
-    try:
-        client.send_message([export_path])
-    except Exception as e:
-        scene.error(f"Couldn't send message. Error {e}")
+    client.send_message([export_path])
     client.close()
