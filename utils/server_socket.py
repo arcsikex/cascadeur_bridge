@@ -14,7 +14,6 @@ class ServerSocket:
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self._host, self._port))
         self.sock.listen(1)
-
         self.client_socket = None
         print(f"Server listening on {self._host}:{self._port}")
 
@@ -23,16 +22,25 @@ class ServerSocket:
         message = message.encode(self._format)
         msg_length = str(len(message)).encode(self._format)
         msg_length += b" " * (self._header - len(msg_length))
-        # Sending the message
-        self.client_socket.send(msg_length)
-        print(message)
-        self.client_socket.send(message)
+        try:
+            # Sending the message
+            self.client_socket.send(msg_length)
+            print(message)
+            self.client_socket.send(message)
+        except Exception as e:
+            print(f"Couldn't send message. Error: {e}")
+            return False
+        return True
 
     def receive_message(self):
-        # Recieve the messagge
-        msg_length = self.client_socket.recv(self._header).decode(self._format)
-        msg_length = int(msg_length)
-        message = self.client_socket.recv(msg_length).decode(self._format)
+        try:
+            # Recieve the messagge
+            msg_length = self.client_socket.recv(self._header).decode(self._format)
+            msg_length = int(msg_length)
+            message = self.client_socket.recv(msg_length).decode(self._format)
+        except Exception as e:
+            print(f"Couldn't recieve message. Error: {e}")
+            return False
         message = json.loads(message)
         print(message)
         return message
@@ -44,4 +52,7 @@ class ServerSocket:
             print(f"Connection from {client_address}")
 
     def close(self):
-        self.sock.close()
+        try:
+            self.sock.close()
+        except:
+            pass
