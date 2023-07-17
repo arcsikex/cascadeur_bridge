@@ -58,16 +58,18 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         row.label(text="Cascadeur > Blender")
         row.scale_y = 1.2
 
-        col.operator(
+        props = col.operator(
             "cbb.import_cascadeur_action",
             text="Import Action",
             icon="ARMATURE_DATA",
         )
-        col.operator(
+        props.batch_export = False
+        props = col.operator(
             "cbb.import_cascadeur_fbx",
             text="Import Scene",
             icon="IMPORT",
         )
+        props.batch_export = False
         # Batch
         col = box.column(align=True)
         col.label(text="Batch import")

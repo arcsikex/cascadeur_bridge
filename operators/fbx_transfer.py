@@ -61,12 +61,12 @@ def export_fbx(file_path: str) -> None:
 def get_actions_from_armatures(selected_objects: list) -> list:
     actions = []
     for obj in selected_objects:
-        if obj.type == "ARMATURE" and obj.animation_data.action:
+        if hasattr(obj.animation_data, "action"):
             action = obj.animation_data.action
-            actions.append(action)
-        elif obj.type != "ARMATURE" and obj.animation_data.action:
-            action = obj.animation_data.action
-            bpy.data.actions.remove(action)
+            if obj.type == "ARMATURE":
+                actions.append(action)
+            else:
+                bpy.data.actions.remove(action)
     return actions
 
 
