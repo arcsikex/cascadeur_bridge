@@ -110,7 +110,7 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     cbb_import_use_prepost_rot: bpy.props.BoolProperty(
         name="Use Pre/Post Rotation",
         description="Use pre/post rotation from FBX transform",
-        default=False,
+        default=True,
     )
 
     # Blender Export settings
