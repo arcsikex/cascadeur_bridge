@@ -15,7 +15,6 @@ def run(scene):
         client = ClientSocket()
     except Exception as e:
         scene.error(f"Couldn't create socket. Error: {e}")
-        client.close()
         return
     settings_dict = client.receive_message()
     export_paths = []

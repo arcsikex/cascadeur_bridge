@@ -124,7 +124,6 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
         try:
             self.server_socket = ServerSocket()
         except Exception as e:
-            self.server_socket.close()
             self.report({"ERROR"}, e)
             addon_info.operation_completed = True
             return {"CANCELLED"}
@@ -190,7 +189,6 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
         try:
             self.server_socket = ServerSocket()
         except Exception as e:
-            self.server_socket.close()
             self.report({"ERROR"}, e)
             addon_info.operation_completed = True
             return {"CANCELLED"}
@@ -267,7 +265,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         try:
             self.server_socket = ServerSocket()
         except Exception as e:
-            self.server_socket.close()
             self.report({"ERROR"}, e)
             addon_info.operation_completed = True
             return {"CANCELLED"}
