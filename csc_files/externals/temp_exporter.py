@@ -18,11 +18,15 @@ def run(scene):
         .get_fbx_loader(scene_pr)
     )
     export_path = commons.get_export_path(scene_pr.name())
-    client = ClientSocket()
+    try:
+        client = ClientSocket()
+    except Exception as e:
+        scene.error(f"Couldn't create socket. Error: {e}")
+        return
+
     settings_dict = client.receive_message()
     fbx_scene_loader.set_settings(commons.set_export_settings(settings_dict))
     fbx_scene_loader.export_all_objects(export_path)
     scene.info(f"File exported to {export_path}")
-
     client.send_message([export_path])
     client.close()

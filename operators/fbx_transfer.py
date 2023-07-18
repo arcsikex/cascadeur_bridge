@@ -61,12 +61,12 @@ def export_fbx(file_path: str) -> None:
 def get_actions_from_armatures(selected_objects: list) -> list:
     actions = []
     for obj in selected_objects:
-        if obj.type == "ARMATURE" and obj.animation_data.action:
+        if hasattr(obj.animation_data, "action"):
             action = obj.animation_data.action
-            actions.append(action)
-        elif obj.type != "ARMATURE" and obj.animation_data.action:
-            action = obj.animation_data.action
-            bpy.data.actions.remove(action)
+            if obj.type == "ARMATURE":
+                actions.append(action)
+            else:
+                bpy.data.actions.remove(action)
     return actions
 
 
@@ -95,10 +95,7 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
     file_path = None
 
     def __del__(self):
-        try:
-            self.server_socket.close()
-        except AttributeError:
-            pass
+        self.server_socket.close()
         addon_info.operation_completed = True
 
     def modal(self, context, event):
@@ -123,7 +120,13 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
 
     def execute(self, context):
         addon_info.operation_completed = False
-        self.server_socket = ServerSocket()
+
+        try:
+            self.server_socket = ServerSocket()
+        except Exception as e:
+            self.report({"ERROR"}, e)
+            addon_info.operation_completed = True
+            return {"CANCELLED"}
 
         self.file_path = file_handling.get_export_path()
         try:
@@ -152,10 +155,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
     )
 
     def __del__(self):
-        try:
-            self.server_socket.close()
-        except AttributeError:
-            pass
+        self.server_socket.close()
         addon_info.operation_completed = True
 
     def modal(self, context, event):
@@ -185,7 +185,14 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
 
     def execute(self, context):
         addon_info.operation_completed = False
-        self.server_socket = ServerSocket()
+
+        try:
+            self.server_socket = ServerSocket()
+        except Exception as e:
+            self.report({"ERROR"}, e)
+            addon_info.operation_completed = True
+            return {"CANCELLED"}
+
         command_file = "temp_batch_exporter" if self.batch_export else "temp_exporter"
         CascadeurHandler().execute_csc_command(f"commands.externals.{command_file}")
         context.window_manager.modal_handler_add(self)
@@ -216,10 +223,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
     )
 
     def __del__(self):
-        try:
-            self.server_socket.close()
-        except AttributeError:
-            pass
+        self.server_socket.close()
         addon_info.operation_completed = True
 
     def modal(self, context, event):
@@ -257,8 +261,16 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
 
     def execute(self, context):
         addon_info.operation_completed = False
+
+        try:
+            self.server_socket = ServerSocket()
+        except Exception as e:
+            self.report({"ERROR"}, e)
+            addon_info.operation_completed = True
+            return {"CANCELLED"}
+
         self.ao = bpy.context.active_object
-        self.server_socket = ServerSocket()
+
         command_file = "temp_batch_exporter" if self.batch_export else "temp_exporter"
         CascadeurHandler().execute_csc_command(f"commands.externals.{command_file}")
         context.window_manager.modal_handler_add(self)

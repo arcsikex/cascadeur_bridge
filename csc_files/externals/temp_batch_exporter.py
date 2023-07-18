@@ -11,7 +11,11 @@ def command_name():
 def run(scene):
     scene_manager = csc.app.get_application().get_scene_manager()
     scenes = scene_manager.scenes()
-    client = ClientSocket()
+    try:
+        client = ClientSocket()
+    except Exception as e:
+        scene.error(f"Couldn't create socket. Error: {e}")
+        return
     settings_dict = client.receive_message()
     export_paths = []
 
