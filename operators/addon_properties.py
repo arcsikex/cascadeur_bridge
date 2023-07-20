@@ -6,9 +6,6 @@ def generate_items(options: list) -> list:
     return [(option, option, "") for option in options]
 
 
-config = config_handling.get_config()
-
-
 class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     # Cascadeur Export settings
     cbb_csc_import_selected: bpy.props.BoolProperty(
@@ -19,7 +16,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_csc_import_selected",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -31,7 +27,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_csc_apply_euler_filter",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -44,7 +39,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_csc_up_axis",
             str,
             fallback="Y",
-            config=config,
         ),
     )
 
@@ -56,7 +50,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_csc_bake_animation",
             bool,
             fallback=True,
-            config=config,
         ),
     )
 
@@ -69,7 +62,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_global_scale",
             float,
             fallback=1.0,
-            config=config,
         ),
         min=0.001,
         max=1000,
@@ -83,7 +75,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_apply_transform",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -95,7 +86,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_manual_orientation",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -108,7 +98,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_axis_forward",
             str,
             fallback="-Z",
-            config=config,
         ),
     )
 
@@ -121,7 +110,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_axis_up",
             str,
             fallback="Y",
-            config=config,
         ),
     )
 
@@ -133,7 +121,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_use_anim",
             bool,
             fallback=True,
-            config=config,
         ),
     )
 
@@ -145,7 +132,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_anim_offset",
             float,
             fallback=1.0,
-            config=config,
         ),
     )
 
@@ -157,7 +143,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_ignore_leaf_bones",
             bool,
             fallback=True,
-            config=config,
         ),
     )
 
@@ -169,7 +154,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_force_connect_children",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -181,7 +165,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_automatic_bone_orientation",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -194,7 +177,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_primary_bone_axis",
             str,
             fallback="Y",
-            config=config,
         ),
     )
 
@@ -207,7 +189,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_secondary_bone_axis",
             str,
             fallback="X",
-            config=config,
         ),
     )
 
@@ -219,7 +200,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_import_use_prepost_rot",
             bool,
             fallback=True,
-            config=config,
         ),
     )
 
@@ -232,7 +212,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_use_selection",
             bool,
             fallback=True,
-            config=config,
         ),
     )
 
@@ -257,7 +236,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_object_types",
             set,
             fallback={"EMPTY", "CAMERA", "LIGHT", "ARMATURE", "MESH", "OTHER"},
-            config=config,
         ),
     )
 
@@ -269,7 +247,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_global_scale",
             float,
             fallback=1.0,
-            config=config,
         ),
         min=0.001,
         max=1000,
@@ -284,7 +261,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_axis_forward",
             str,
             fallback="-Z",
-            config=config,
         ),
     )
 
@@ -297,7 +273,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_axis_up",
             str,
             fallback="Y",
-            config=config,
         ),
     )
 
@@ -309,7 +284,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_apply_transform",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -322,7 +296,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_primary_bone_axis",
             str,
             fallback="Y",
-            config=config,
         ),
     )
 
@@ -335,7 +308,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_secondary_bone_axis",
             str,
             fallback="X",
-            config=config,
         ),
     )
 
@@ -347,7 +319,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_deform_only",
             bool,
             fallback=True,
-            config=config,
         ),
     )
 
@@ -359,7 +330,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_leaf_bones",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -371,7 +341,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_bake_anim",
             bool,
             fallback=True,
-            config=config,
         ),
     )
 
@@ -383,7 +352,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_use_nla_strips",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
@@ -395,7 +363,6 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "cbb_export_use_all_actions",
             bool,
             fallback=False,
-            config=config,
         ),
     )
 
