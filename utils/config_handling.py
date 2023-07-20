@@ -67,9 +67,8 @@ def save_fbx_settings():
 
     my_group = bpy.context.scene.cbb_fbx_settings
 
-    for attr_name, attr_value in my_group.rna_type.properties.items():
+    for attr_name, _ in my_group.rna_type.properties.items():
         if attr_name not in ["rna_type", "name"]:
-            print(f"Property: {attr_name}, Value: {getattr(my_group, attr_name)}")
             config.set(section, attr_name, str(getattr(my_group, attr_name)))
 
     with open(config_path, "w") as configfile:
