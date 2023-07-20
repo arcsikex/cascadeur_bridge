@@ -37,7 +37,7 @@ def update_all_tab_names(self, context):
     new_name = bpy.context.preferences.addons[__name__].preferences.csc_tab_name
     ui.main_panel.PanelBasics.bl_category = new_name
     # Save to file
-    config_handling.set_panel_name(new_name)
+    config_handling.set_config_parameter("Addon Settings", "panel_name", new_name)
 
     # Register everything
     for c in ui.classes:

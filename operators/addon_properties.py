@@ -1,8 +1,12 @@
 import bpy
+from ..utils import config_handling
 
 
 def generate_items(options: list) -> list:
     return [(option, option, "") for option in options]
+
+
+config = config_handling.get_config()
 
 
 class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
@@ -10,7 +14,9 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     cbb_csc_import_selected: bpy.props.BoolProperty(
         name="Selected Interval",
         description="Import selected interval only",
-        default=False,
+        default=config_handling.get_bool_config_parameter(
+            "FBX Settings", "cbb_csc_import_selected", fallback=False, config=config
+        ),
     )
 
     cbb_csc_apply_euler_filter: bpy.props.BoolProperty(
@@ -227,3 +233,14 @@ def get_csc_export_settings() -> dict:
     settings["up_axis"] = addon_props.cbb_csc_up_axis
     settings["bake_animation"] = addon_props.cbb_csc_bake_animation
     return settings
+
+
+class CBB_OT_save_fbx_settings(bpy.types.Operator):
+    """Save fbx import and export settings for Cascadeur and Blender"""
+
+    bl_idname = "cbb.save_fbx_settings"
+    bl_label = "Save Settings"
+
+    def execute(self, context):
+        config_handling.save_fbx_settings()
+        return {"FINISHED"}
