@@ -15,19 +15,33 @@ def get_config() -> configparser.ConfigParser:
 def get_config_parameter(
     section: str,
     parameter: str,
-    fallback,
-    config: configparser.ConfigParser = get_config(),
+    data_type=str,
+    fallback=None,
+    config: configparser.ConfigParser = None,
 ):
-    return config.get(section, parameter, fallback=fallback)
+    if config is None:
+        config = get_config()
 
+    get_method = {
+        str: config.get,
+        bool: config.getboolean,
+        int: config.getint,
+        float: config.getfloat,
+        set: config.get,
+    }.get(data_type, config.get)
 
-def get_bool_config_parameter(
-    section: str,
-    parameter: str,
-    fallback,
-    config: configparser.ConfigParser = get_config(),
-):
-    return config.getboolean(section, parameter, fallback=fallback)
+    if data_type is set:
+        # Check if the parameter exists in the config
+        if config.has_option(section, parameter):
+            value = config.get(section, parameter)
+            # Check if the value is empty
+            value = eval(value) if value else set()
+        else:
+            value = fallback
+    else:
+        value = get_method(section, parameter, fallback=fallback)
+
+    return value
 
 
 def set_config_parameter(

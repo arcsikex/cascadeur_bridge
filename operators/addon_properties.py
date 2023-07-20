@@ -14,8 +14,12 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     cbb_csc_import_selected: bpy.props.BoolProperty(
         name="Selected Interval",
         description="Import selected interval only",
-        default=config_handling.get_bool_config_parameter(
-            "FBX Settings", "cbb_csc_import_selected", fallback=False, config=config
+        default=config_handling.get_config_parameter(
+            "FBX Settings",
+            "cbb_csc_import_selected",
+            bool,
+            fallback=False,
+            config=config,
         ),
     )
 
@@ -142,7 +146,13 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             ),
         ),
         description="Which kind of object to export",
-        default={"EMPTY", "CAMERA", "LIGHT", "ARMATURE", "MESH", "OTHER"},
+        default=config_handling.get_config_parameter(
+            "FBX Settings",
+            "cbb_export_object_types",
+            set,
+            fallback={"EMPTY", "CAMERA", "LIGHT", "ARMATURE", "MESH", "OTHER"},
+            config=config,
+        ),
     )
 
     cbb_export_global_scale: bpy.props.FloatProperty(
