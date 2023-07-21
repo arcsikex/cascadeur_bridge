@@ -72,7 +72,7 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         props.batch_export = False
         # Batch
         col = box.column(align=True)
-        col.label(text="Batch import")
+        col.label(text="Batch Import")
         props = col.operator(
             "cbb.import_cascadeur_action",
             text="Import All Actions",

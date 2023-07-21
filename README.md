@@ -10,10 +10,11 @@ For a visual introduction watch the youtube video:
 
 ![Cascadeur Bridge UI](/doc/addon_side_panel.png)
 
-- Start Cascadeur from Blender 
-- Export selected objects from Blender to Cascadeur
+- Start Cascadeur from Blender
+- Export scene from Blender to Cascadeur
 - Import whole scene from Cascadeur
 - Import animation to selected armature
+- Batch import all opened scenes and actions from Cascadeur
 - Configure Cascadeur FBX export settings
 - Configure Blender FBX import/export settings
 
@@ -34,11 +35,16 @@ To install Cascadeur Bridge, follow these steps:
 
 ## Usage
 
-You can find the addon on the side panel of the 3D Viewport with the name CSC Bridge.
-- Select an Armature to **Import Action** to the selected object. **This armature should be exactly the same in both software!**
-This operator imports the Cascadeur scene as fbx, apply the imported action to the selected armature and delete the imported objects.
-- **Import Scene** will simply import the current Cascadeur scene as an fbx.
-- **Export Selected** will export the selected objects and import them into Cascadeur
+The addon can be accessed from the N panel of the 3D Viewport in Blender.
+- In the add-on preferences, you have the option to set the display name of the N panel. This feature is particularly useful if you want to merge the user interface with a different add-on.
+- **Export to Cascadeur** will export the Blender scene and import it to Cascadeur.
+- **Import Action**: To import an action into the selected object, first, make sure to select an **Armature that exactly matches the one in Cascadeur**.
+ This operator will import the Cascadeur scene as an fbx file, apply the imported action to the selected armature, and then delete the imported objects.
+- **Import Scene** will simply import the current Cascadeur scene as an fbx file.
+- **Batch Import** Similar to "Import Scene" and "Import Action", but this option allows you to import scenes or actions from **all opened scenes in Cascadeur**.
+- **Cascadeur Export Settings and Blender Import/Export Settings:** The default settings are optimized for typical use, but you might need different settings based on your specific requirements. Adjust the usual Blender FBX export/import settings and the Cascadeur FBX export settings here. Once you find the settings that work for you, remember to click the Save Settings button.
+
+
 
 ## Remove the addon
 
@@ -48,8 +54,7 @@ To remove the addon
     - go to your commands folder (*CASCADEUR PATH\resources\scripts\python\commands*) and delete the ***externals*** folder. 
 
 ## Future plans:
-- Make fbx import/export settings section
-- Import actions from all opened scene
+- Bind textures automatically in Cascaduer
 - Set up camera in Cascadeur (to match with Blender)
 - Export action from Blender
 
