@@ -211,7 +211,7 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
             "FBX Settings",
             "cbb_export_use_selection",
             bool,
-            fallback=True,
+            fallback=False,
         ),
     )
 
@@ -395,5 +395,10 @@ class CBB_OT_save_fbx_settings(bpy.types.Operator):
     bl_label = "Save Settings for CSC Bridge"
 
     def execute(self, context):
-        config_handling.save_fbx_settings()
+        try:
+            config_handling.save_fbx_settings()
+        except Exception as e:
+            self.report({"ERROR", f"Couldn't save settings: {e}"})
+            return {"CANCELLED"}
+        self.report({"INFO"}, "Settings saved")
         return {"FINISHED"}
