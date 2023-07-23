@@ -13,6 +13,12 @@ class CBB_PT_csc_bridge_settings(PanelBasics, bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         row = layout.row()
+        row.operator(
+            "cbb.save_fbx_settings",
+            text="Save Settings",
+            icon="FAKE_USER_ON",
+        )
+        row.separator()
 
 
 class CBB_PT_csc_export_settings(PanelBasics, bpy.types.Panel):
