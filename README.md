@@ -1,10 +1,17 @@
 # Cascadeur Bridge for Blender
 
 Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur into your workflow with Blender.
-
 For a visual introduction watch the youtube video:
 
 [![Watch the video](https://img.youtube.com/vi/0muo9EPIPSE/default.jpg)](https://youtu.be/0muo9EPIPSE)
+
+### Table of Content:
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Remove the addon](#remove-the-addon)
+- [Possible issues](#possible-issues)
+- [Future plans](#future-plans)
 
 ## Features
 
@@ -53,11 +60,20 @@ To remove the addon
 - from **Cascadeur** 
     - go to your commands folder (*CASCADEUR PATH\resources\scripts\python\commands*) and delete the ***externals*** folder. 
 
-## Future plans:
+## Possible issues
+1. **Wrong rotation/scale** of your mesh in Blender/Cascadeur
+    - Make sure that the transform values (especially rotation and scale) of your objects are applied in Blender
+    - Change the export/import settings to apply the correct orientation/scale
+2. **Permission Denied error** when trying to execute function from Blender
+    - **Solution:** Give execute permission to your Cascadeur install folder
+3. **Cascadeur crashes**
+    - **Solution:** Stop Cascadeur process from the Task Manager. Please create an [Issues](https://github.com/arcsikex/cascadeur_bridge/issues) and attach Cascadeur logs to know why the crash happened.
+
+## Future plans
 - Bind textures automatically in Cascaduer
 - Set up camera in Cascadeur (to match with Blender)
 - Export action from Blender
 
-If you have more idea/request or you found a bug please report it in the **Issues**.
+If you have more idea/request or you found a bug please report it in the **[Issues](https://github.com/arcsikex/cascadeur_bridge/issues)**.
 
 ---
