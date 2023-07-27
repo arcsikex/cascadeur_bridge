@@ -71,8 +71,16 @@ def get_actions_from_armatures(selected_objects: list) -> list:
 
 
 def delete_objects(objects: list) -> None:
-    for obj in objects:
-        bpy.data.objects.remove(obj, do_unlink=True)
+    # Create a copy of the objects list
+    objects_copy = objects.copy()
+
+    for obj in objects_copy:
+        # Check if the object exists in Blender's data before attempting to remove it
+        obj_in_data = bpy.data.objects.get(obj.name)
+        if obj_in_data:
+            bpy.data.objects.remove(obj, do_unlink=True)
+            # Remove the object from the original list to avoid reprocessing
+            objects.remove(obj)
 
     # Update the scene to reflect the changes
     bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
