@@ -1,19 +1,27 @@
 # Cascadeur Bridge for Blender
 
 Cascadeur Bridge is a Blender addon designed to help you integrate Cascadeur into your workflow with Blender.
-
 For a visual introduction watch the youtube video:
 
 [![Watch the video](https://img.youtube.com/vi/0muo9EPIPSE/default.jpg)](https://youtu.be/0muo9EPIPSE)
+
+### Table of Content:
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Remove the addon](#remove-the-addon)
+- [Possible issues](#possible-issues)
+- [Future plans](#future-plans)
 
 ## Features
 
 ![Cascadeur Bridge UI](/doc/addon_side_panel.png)
 
-- Start Cascadeur from Blender 
-- Export selected objects from Blender to Cascadeur
+- Start Cascadeur from Blender
+- Export scene from Blender to Cascadeur
 - Import whole scene from Cascadeur
 - Import animation to selected armature
+- Batch import all opened scenes and actions from Cascadeur
 - Configure Cascadeur FBX export settings
 - Configure Blender FBX import/export settings
 
@@ -34,11 +42,16 @@ To install Cascadeur Bridge, follow these steps:
 
 ## Usage
 
-You can find the addon on the side panel of the 3D Viewport with the name CSC Bridge.
-- Select an Armature to **Import Action** to the selected object. **This armature should be exactly the same in both software!**
-This operator imports the Cascadeur scene as fbx, apply the imported action to the selected armature and delete the imported objects.
-- **Import Scene** will simply import the current Cascadeur scene as an fbx.
-- **Export Selected** will export the selected objects and import them into Cascadeur
+The addon can be accessed from the N panel of the 3D Viewport in Blender.
+- In the add-on preferences, you have the option to set the display name of the N panel. This feature is particularly useful if you want to merge the user interface with a different add-on.
+- **Export to Cascadeur** will export the Blender scene and import it to Cascadeur.
+- **Import Action**: To import an action into the selected object, first, make sure to select an **Armature that exactly matches the one in Cascadeur**.
+ This operator will import the Cascadeur scene as an fbx file, apply the imported action to the selected armature, and then delete the imported objects.
+- **Import Scene** will simply import the current Cascadeur scene as an fbx file.
+- **Batch Import** Similar to "Import Scene" and "Import Action", but this option allows you to import scenes or actions from **all opened scenes in Cascadeur**.
+- **Cascadeur Export Settings and Blender Import/Export Settings:** The default settings are optimized for typical use, but you might need different settings based on your specific requirements. Adjust the usual Blender FBX export/import settings and the Cascadeur FBX export settings here. Once you find the settings that work for you, remember to click the Save Settings button.
+
+
 
 ## Remove the addon
 
@@ -47,12 +60,20 @@ To remove the addon
 - from **Cascadeur** 
     - go to your commands folder (*CASCADEUR PATH\resources\scripts\python\commands*) and delete the ***externals*** folder. 
 
-## Future plans:
-- Make fbx import/export settings section
-- Import actions from all opened scene
+## Possible issues
+1. **Wrong rotation/scale** of your mesh in Blender/Cascadeur
+    - Make sure that the transform values (especially rotation and scale) of your objects are applied in Blender
+    - Change the export/import settings to apply the correct orientation/scale
+2. **Permission Denied error** when trying to execute function from Blender
+    - **Solution:** Give execute permission to your Cascadeur install folder
+3. **Cascadeur crashes**
+    - **Solution:** Stop Cascadeur process from the Task Manager. Please create an [Issues](https://github.com/arcsikex/cascadeur_bridge/issues) and attach Cascadeur logs to know why the crash happened.
+
+## Future plans
+- Bind textures automatically in Cascaduer
 - Set up camera in Cascadeur (to match with Blender)
 - Export action from Blender
 
-If you have more idea/request or you found a bug please report it in the **Issues**.
+If you have more idea/request or you found a bug please report it in the **[Issues](https://github.com/arcsikex/cascadeur_bridge/issues)**.
 
 ---
