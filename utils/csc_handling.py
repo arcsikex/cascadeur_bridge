@@ -61,4 +61,4 @@ class CascadeurHandler:
         subprocess.Popen([csc_path])
 
     def execute_csc_command(self, command: str) -> None:
-        subprocess.Popen([self.csc_exe_path_addon_preference, "-run-script", command])
+        subprocess.Popen([self.csc_exe_path_addon_preference, "--run-script", command])
