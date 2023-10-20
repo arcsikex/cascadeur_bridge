@@ -45,16 +45,7 @@ class CascadeurHandler:
             if platform.system() == "Darwin"
             else os.path.join(self.csc_dir, "resources")
         )
-        commands_config = os.path.join(resources_dir, "settings.ini")
-        with open(commands_config, "r") as f:
-            for line in f:
-                if line.startswith("ScriptsDir"):
-                    scripts_dir = line.split("=")[1].strip().strip('"')
-                    break
-        if scripts_dir:
-            return scripts_dir
-        else:
-            return os.path.join(resources_dir, "scripts", "python", "commands")
+        return os.path.join(resources_dir, "scripts", "python", "commands")
 
     def start_cascadeur(self) -> None:
         csc_path = self.csc_exe_path_addon_preference
