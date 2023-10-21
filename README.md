@@ -29,7 +29,7 @@ For a visual introduction watch the youtube video:
 
 To install Cascadeur Bridge, follow these steps:
 
-1. Download the [latest release](https://github.com/arcsikex/cascadeur_bridge/releases/tag/1.0.1) from the **releases**
+1. Download the [latest release](https://github.com/arcsikex/cascadeur_bridge/releases/tag/1.0.1) from the **releases** (for Cascadeur 2023.2)
     > For Cascadeur version **between 2022.3.1 and 2023.1** use [Cascadeur Bridge 1.0.0](https://github.com/arcsikex/cascadeur_bridge/releases/tag/1.0.0)
 
     > For **2022.3.1 or older** use [Cascadeur Bridge 0.4.1](https://github.com/arcsikex/cascadeur_bridge/releases/tag/0.4.1)
