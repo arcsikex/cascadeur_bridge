@@ -1,14 +1,14 @@
 import csc
 
-from .client_socket import ClientSocket
-from . import commons
-
 
 def command_name():
     return "External commands.Temp Exporter"
 
 
 def run(scene):
+    from .client_socket import ClientSocket
+    from . import commons
+
     scene_manager = csc.app.get_application().get_scene_manager()
     scenes = scene_manager.scenes()
     try:

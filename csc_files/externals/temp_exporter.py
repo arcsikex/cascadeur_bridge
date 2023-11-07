@@ -1,14 +1,14 @@
 import csc
 
-from .client_socket import ClientSocket
-from . import commons
-
 
 def command_name():
     return "External commands.Temp Exporter"
 
 
 def run(scene):
+    from .client_socket import ClientSocket
+    from . import commons
+
     mp = csc.app.get_application()
     scene_pr = mp.get_scene_manager().current_scene()
     fbx_scene_loader = (
