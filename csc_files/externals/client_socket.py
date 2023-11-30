@@ -1,5 +1,6 @@
 import socket
 import json
+from typing import Any
 
 import csc
 
@@ -16,7 +17,7 @@ class ClientSocket:
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((self._host, self._port))
 
-    def send_message(self, message):
+    def send_message(self, message: Any) -> bool:
         message = json.dumps(message, ensure_ascii=False)
         message = message.encode(self._format)
         # Sending the lenght of the message padded to be the size of _header
@@ -32,7 +33,7 @@ class ClientSocket:
             return False
         return True
 
-    def receive_message(self):
+    def receive_message(self) -> Any:
         try:
             # Recieve the messagge
             msg_length = self.client_socket.recv(self._header).decode(self._format)
@@ -44,7 +45,7 @@ class ClientSocket:
         message = json.loads(message)
         return message
 
-    def close(self):
+    def close(self) -> None:
         try:
             self.client_socket.close()
         except:

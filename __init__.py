@@ -25,7 +25,7 @@ from .utils import config_handling
 from .utils.csc_handling import get_default_csc_exe_path
 
 
-def update_all_tab_names(self, context):
+def update_all_tab_names(self, context) -> None:
     try:
         # Unregister everything
         for c in ui.classes:

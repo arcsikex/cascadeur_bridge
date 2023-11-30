@@ -2,6 +2,7 @@ import os
 import time
 import tempfile
 import shutil
+from typing import List
 
 
 def file_exists(file_path: str) -> bool:
@@ -22,7 +23,9 @@ def get_export_path() -> str:
     return os.path.join(temp_dir, f"temp_export_{current_time}.fbx")
 
 
-def copy_files(source_folder, target_folder, file_list, overwrite=True) -> bool:
+def copy_files(
+    source_folder: str, target_folder: str, file_list: List[str], overwrite: bool = True
+) -> bool:
     if not os.path.exists(target_folder):
         try:
             os.makedirs(target_folder)
