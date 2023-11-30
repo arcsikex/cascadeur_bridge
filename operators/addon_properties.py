@@ -367,14 +367,14 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     )
 
 
-def register_props():
+def register_props() -> None:
     bpy.utils.register_class(CBB_PG_fbx_settings)
     bpy.types.Scene.cbb_fbx_settings = bpy.props.PointerProperty(
         type=CBB_PG_fbx_settings
     )
 
 
-def unregister_props():
+def unregister_props() -> None:
     bpy.utils.unregister_class(CBB_PG_fbx_settings)
 
 

@@ -26,7 +26,7 @@ def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     return settings
 
 
-def get_export_path(scene_name) -> str:
+def get_export_path(scene_name: str) -> str:
     temp_dir = tempfile.gettempdir()
     file_name = scene_name.replace(".casc", "") + ".fbx"
     return os.path.join(temp_dir, file_name)

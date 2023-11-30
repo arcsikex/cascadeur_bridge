@@ -2,6 +2,7 @@ import bpy
 
 import os
 import configparser
+from typing import Any
 
 config_path = os.path.join(os.path.dirname(__file__), "..", "settings.cfg")
 
@@ -18,7 +19,7 @@ def get_config_parameter(
     data_type=str,
     fallback=None,
     config: configparser.ConfigParser = None,
-):
+) -> Any:
     if config is None:
         config = get_config()
 
@@ -49,17 +50,17 @@ def set_config_parameter(
     parameter: str,
     value: str,
     config: configparser.ConfigParser = get_config(),
-):
+) -> None:
     config.set(section, parameter, value)
     with open(config_path, "w") as configfile:
         config.write(configfile)
 
 
-def get_panel_name():
+def get_panel_name() -> str:
     return get_config_parameter("Addon Settings", "panel_name", fallback="CSC Bridge")
 
 
-def save_fbx_settings():
+def save_fbx_settings() -> None:
     config = get_config()
     section = "FBX Settings"
     if not config.has_section(section):

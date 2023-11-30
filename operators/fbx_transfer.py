@@ -86,7 +86,14 @@ def delete_objects(objects: list) -> None:
     bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
 
 
-def apply_action(armature, action, action_name="cascadeur_action") -> None:
+def apply_action(
+    armature: bpy.types.Armature,
+    action: bpy.types.Action,
+    action_name: str = "cascadeur_action",
+) -> None:
+    # TODO verify the type of armature and action
+    # print(f'Type of armature: {type(armature)}')
+    # print(f'Type of action: {type(action)}')
     action.name = action_name
     if not hasattr(armature.animation_data, "action"):
         armature.animation_data_create()

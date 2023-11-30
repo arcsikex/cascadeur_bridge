@@ -1,6 +1,7 @@
 import socket
 import select
 import json
+from typing import Any
 
 
 class ServerSocket:
@@ -17,7 +18,7 @@ class ServerSocket:
         self.client_socket = None
         print(f"Server listening on {self._host}:{self._port}")
 
-    def send_message(self, message):
+    def send_message(self, message: Any) -> bool:
         message = json.dumps(message, ensure_ascii=False)
         message = message.encode(self._format)
         msg_length = str(len(message)).encode(self._format)
@@ -32,7 +33,7 @@ class ServerSocket:
             return False
         return True
 
-    def receive_message(self):
+    def receive_message(self) -> Any:
         try:
             # Recieve the messagge
             msg_length = self.client_socket.recv(self._header).decode(self._format)
@@ -45,13 +46,13 @@ class ServerSocket:
         print(message)
         return message
 
-    def run(self):
+    def run(self) -> None:
         ready, _, _ = select.select([self.sock], [], [], 0)
         if ready:
             self.client_socket, client_address = self.sock.accept()
             print(f"Connection from {client_address}")
 
-    def close(self):
+    def close(self) -> None:
         try:
             self.sock.close()
         except:
