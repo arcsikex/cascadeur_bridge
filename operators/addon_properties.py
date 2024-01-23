@@ -379,6 +379,11 @@ def unregister_props() -> None:
 
 
 def get_csc_export_settings() -> dict:
+    """
+    Collect Cascadeur FBX export settings in a dictionary.
+
+    :return dict: Cascadeur FBX export settings
+    """
     settings = {}
     addon_props = bpy.context.scene.cbb_fbx_settings
     settings["selected_interval"] = addon_props.cbb_csc_import_selected

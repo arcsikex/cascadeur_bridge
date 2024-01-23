@@ -19,6 +19,13 @@ class ServerSocket:
         print(f"Server listening on {self._host}:{self._port}")
 
     def send_message(self, message: Any) -> bool:
+        """
+        Message to be sent to Cascadeur json serialized.
+        First the message length will be sent, then the actual message.
+
+        :param Any message: Message to be sent
+        :return bool: False in case of an exception, otherwise True
+        """
         message = json.dumps(message, ensure_ascii=False)
         message = message.encode(self._format)
         msg_length = str(len(message)).encode(self._format)
@@ -34,6 +41,12 @@ class ServerSocket:
         return True
 
     def receive_message(self) -> Any:
+        """
+        Recieve message from Cascadeur decoded from json format.
+        First expects the message length, then the actual message.
+
+        :return Any: Decoded message
+        """
         try:
             # Recieve the messagge
             msg_length = self.client_socket.recv(self._header).decode(self._format)
@@ -47,12 +60,18 @@ class ServerSocket:
         return message
 
     def run(self) -> None:
+        """
+        Start socket and wait for connection.
+        """
         ready, _, _ = select.select([self.sock], [], [], 0)
         if ready:
             self.client_socket, client_address = self.sock.accept()
             print(f"Connection from {client_address}")
 
     def close(self) -> None:
+        """
+        Closing the socket.
+        """
         try:
             self.sock.close()
         except:

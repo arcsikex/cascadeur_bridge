@@ -8,6 +8,11 @@ config_path = os.path.join(os.path.dirname(__file__), "..", "settings.cfg")
 
 
 def get_config() -> configparser.ConfigParser:
+    """
+    Get the ConfigParser object for the settings.cfg file.
+
+    :return configparser.ConfigParser: ConfigParser for the config file
+    """
     config = configparser.ConfigParser()
     config.read(config_path)
     return config
@@ -20,6 +25,16 @@ def get_config_parameter(
     fallback=None,
     config: configparser.ConfigParser = None,
 ) -> Any:
+    """
+    Get config parameter value from the config file.
+
+    :param str section: Section name of the config
+    :param str parameter: Parameter name
+    :param _type_ data_type: Parameter value data type, defaults to str
+    :param _type_ fallback: Fallback value if parameter is not found, defaults to None
+    :param configparser.ConfigParser config: ConfigParser for the config file, defaults to None
+    :return Any: Value of the config parameter
+    """
     if config is None:
         config = get_config()
 
@@ -51,16 +66,32 @@ def set_config_parameter(
     value: str,
     config: configparser.ConfigParser = get_config(),
 ) -> None:
+    """
+    Set the given configuration to value in the section with the provided parameter.
+
+    :param str section: Section name in the config file
+    :param str parameter: Parameter of the config
+    :param str value: Value of the config
+    :param configparser.ConfigParser config: ConfigParser object, defaults to get_config()
+    """
     config.set(section, parameter, value)
     with open(config_path, "w") as configfile:
         config.write(configfile)
 
 
 def get_panel_name() -> str:
+    """
+    Get the N panel name from the config file. Defaults to CSC Bridge.
+
+    :return str: N panel name
+    """
     return get_config_parameter("Addon Settings", "panel_name", fallback="CSC Bridge")
 
 
 def save_fbx_settings() -> None:
+    """
+    Saving fbx settings set on the N panel to the settings.cfg file.
+    """
     config = get_config()
     section = "FBX Settings"
     if not config.has_section(section):

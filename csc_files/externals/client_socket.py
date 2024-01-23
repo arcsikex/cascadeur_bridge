@@ -18,6 +18,13 @@ class ClientSocket:
         self.client_socket.connect((self._host, self._port))
 
     def send_message(self, message: Any) -> bool:
+        """
+        Message to be sent to Cascadeur json serialized.
+        First the message length will be sent, then the actual message.
+
+        :param Any message: Message to be sent
+        :return bool: False in case of an exception, otherwise True
+        """
         message = json.dumps(message, ensure_ascii=False)
         message = message.encode(self._format)
         # Sending the lenght of the message padded to be the size of _header
@@ -34,6 +41,12 @@ class ClientSocket:
         return True
 
     def receive_message(self) -> Any:
+        """
+        Recieve message from Cascadeur decoded from json format.
+        First expects the message length, then the actual message.
+
+        :return Any: Decoded message
+        """
         try:
             # Recieve the messagge
             msg_length = self.client_socket.recv(self._header).decode(self._format)
@@ -46,6 +59,9 @@ class ClientSocket:
         return message
 
     def close(self) -> None:
+        """
+        Closing the socket.
+        """
         try:
             self.client_socket.close()
         except:
