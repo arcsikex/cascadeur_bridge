@@ -10,6 +10,12 @@ import os
 
 
 def import_fbx(file_path: str) -> list:
+    """
+    Importing the provided file with the fbx import settings set on the N panel.
+
+    :param str file_path: FBX file path to be imported
+    :return list: List of selected objects in the scene
+    """
     addon_props = bpy.context.scene.cbb_fbx_settings
     bpy.ops.import_scene.fbx(
         filepath=file_path,
@@ -35,6 +41,12 @@ def import_fbx(file_path: str) -> list:
 
 
 def export_fbx(file_path: str) -> None:
+    """
+    Exporting fbx from Blender to the provided path using the settings
+    set on the N panel.
+
+    :param str file_path: Path of the fbx file.
+    """
     addon_props = bpy.context.scene.cbb_fbx_settings
     bpy.ops.export_scene.fbx(
         filepath=file_path,
@@ -59,6 +71,12 @@ def export_fbx(file_path: str) -> None:
 
 
 def get_actions_from_armatures(selected_objects: list) -> list:
+    """
+    Get the actions from all of the selected objects in Blender.
+
+    :param list selected_objects: List of selected objects
+    :return list: List of obj.animation_data.action objects
+    """
     actions = []
     for obj in selected_objects:
         if hasattr(obj.animation_data, "action"):
@@ -71,6 +89,11 @@ def get_actions_from_armatures(selected_objects: list) -> list:
 
 
 def delete_objects(objects: list) -> None:
+    """
+    Delete the provided list of objects.
+
+    :param list objects: List of objects
+    """
     # Create a copy of the objects list
     objects_copy = objects.copy()
 
@@ -91,6 +114,13 @@ def apply_action(
     action: bpy.types.Action,
     action_name: str = "cascadeur_action",
 ) -> None:
+    """
+    Apply the provided action to the armature with the given name.
+
+    :param bpy.types.Armature armature: Armature object
+    :param bpy.types.Action action: Action object to be set
+    :param str action_name: New name of the action, defaults to "cascadeur_action"
+    """
     # TODO verify the type of armature and action
     # print(f'Type of armature: {type(armature)}')
     # print(f'Type of action: {type(action)}')
