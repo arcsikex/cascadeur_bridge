@@ -130,18 +130,30 @@ def apply_action(
     armature.animation_data.action = action
 
 
-class CBB_OT_export_blender_fbx(bpy.types.Operator):
-    """Exports the selected objects and imports them to Cascadeur"""
-
-    bl_idname = "cbb.export_blender_fbx"
-    bl_label = "Export to Cascadeur"
-
+class OperatorBaseClass(bpy.types.Operator):
     server_socket = None
     file_path = None
 
     def __del__(self):
         self.server_socket.close()
         addon_info.operation_completed = True
+
+    def start_operator(self):
+        addon_info.operation_completed = False
+
+        try:
+            self.server_socket = ServerSocket()
+        except Exception as e:
+            self.report({"ERROR"}, e)
+            addon_info.operation_completed = True
+            return {"CANCELLED"}
+
+
+class CBB_OT_export_blender_fbx(OperatorBaseClass):
+    """Exports the selected objects and imports them to Cascadeur"""
+
+    bl_idname = "cbb.export_blender_fbx"
+    bl_label = "Export to Cascadeur"
 
     def modal(self, context, event):
         if event.type == "ESC":
@@ -164,14 +176,7 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
-        addon_info.operation_completed = False
-
-        try:
-            self.server_socket = ServerSocket()
-        except Exception as e:
-            self.report({"ERROR"}, e)
-            addon_info.operation_completed = True
-            return {"CANCELLED"}
+        self.start_operator()
 
         self.file_path = file_handling.get_export_path()
         try:
@@ -185,23 +190,17 @@ class CBB_OT_export_blender_fbx(bpy.types.Operator):
         return {"RUNNING_MODAL"}
 
 
-class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
+class CBB_OT_import_cascadeur_fbx(OperatorBaseClass):
     """Imports the currently opened Cascadeur scene"""
 
     bl_idname = "cbb.import_cascadeur_fbx"
     bl_label = "Import Cascadeur Scene"
-
-    server_socket = None
 
     batch_export: bpy.props.BoolProperty(
         name="Import all scene",
         description="",
         default=False,
     )
-
-    def __del__(self):
-        self.server_socket.close()
-        addon_info.operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
@@ -229,14 +228,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
-        addon_info.operation_completed = False
-
-        try:
-            self.server_socket = ServerSocket()
-        except Exception as e:
-            self.report({"ERROR"}, e)
-            addon_info.operation_completed = True
-            return {"CANCELLED"}
+        self.start_operator()
 
         command_file = "temp_batch_exporter" if self.batch_export else "temp_exporter"
         CascadeurHandler().execute_csc_command(f"commands.externals.{command_file}")
@@ -244,7 +236,7 @@ class CBB_OT_import_cascadeur_fbx(bpy.types.Operator):
         return {"RUNNING_MODAL"}
 
 
-class CBB_OT_import_action_to_selected(bpy.types.Operator):
+class CBB_OT_import_action_to_selected(OperatorBaseClass):
     """Imports the action from Cascadeur and apply to selected armature"""
 
     bl_idname = "cbb.import_cascadeur_action"
@@ -266,10 +258,6 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         description="",
         default=False,
     )
-
-    def __del__(self):
-        self.server_socket.close()
-        addon_info.operation_completed = True
 
     def modal(self, context, event):
         if event.type == "ESC":
@@ -305,14 +293,7 @@ class CBB_OT_import_action_to_selected(bpy.types.Operator):
         return {"PASS_THROUGH"}
 
     def execute(self, context):
-        addon_info.operation_completed = False
-
-        try:
-            self.server_socket = ServerSocket()
-        except Exception as e:
-            self.report({"ERROR"}, e)
-            addon_info.operation_completed = True
-            return {"CANCELLED"}
+        self.start_operator()
 
         self.ao = bpy.context.active_object
 
