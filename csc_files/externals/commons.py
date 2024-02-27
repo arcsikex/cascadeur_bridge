@@ -13,10 +13,13 @@ def set_export_settings(preferences: dict = {}) -> csc.fbx.FbxSettings:
     settings = csc.fbx.FbxSettings()
     settings.mode = csc.fbx.FbxSettingsMode.Binary
 
-    if preferences.get("selected_interval"):
-        settings.export_selected_interval = True
-    else:
-        settings.export_selected_interval = False
+    try:
+        if preferences.get("selected_interval"):
+            settings.export_selected_interval = True
+        else:
+            settings.export_selected_interval = False
+    except AttributeError:
+        pass
     if preferences.get("euler_filter"):
         settings.apply_euler_filter = True
     else:

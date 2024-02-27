@@ -23,7 +23,7 @@ def run(scene):
         scene.error(f"Couldn't create socket. Error: {e}")
         return
     file_path = client.receive_message()
-    fbx_scene_loader.import_model(file_path)
+    fbx_scene_loader.import_scene(file_path)
     scene.info(f"File imported from {file_path}")
     client.send_message("SUCCESS")
     client.close()
