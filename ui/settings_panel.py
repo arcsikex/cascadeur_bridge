@@ -33,7 +33,6 @@ class CBB_PT_csc_export_settings(PanelBasics, bpy.types.Panel):
         box = layout.box()
         box.label(text="Cascadeur FBX export settings")
         col = box.column(align=True)
-        col.prop(addon_props, "cbb_csc_import_selected")
         col.prop(addon_props, "cbb_csc_apply_euler_filter")
         col.prop(addon_props, "cbb_csc_up_axis")
         col.prop(addon_props, "cbb_csc_bake_animation")
