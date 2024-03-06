@@ -8,17 +8,6 @@ def generate_items(options: list) -> list:
 
 class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     # Cascadeur Export settings
-    cbb_csc_import_selected: bpy.props.BoolProperty(
-        name="Selected Interval",
-        description="Import selected interval only",
-        default=config_handling.get_config_parameter(
-            "FBX Settings",
-            "cbb_csc_import_selected",
-            bool,
-            fallback=False,
-        ),
-    )
-
     cbb_csc_apply_euler_filter: bpy.props.BoolProperty(
         name="Apply Euler Filter",
         description="Automatically set objects' rotations to lowes possible values",
@@ -386,7 +375,6 @@ def get_csc_export_settings() -> dict:
     """
     settings = {}
     addon_props = bpy.context.scene.cbb_fbx_settings
-    settings["selected_interval"] = addon_props.cbb_csc_import_selected
     settings["euler_filter"] = addon_props.cbb_csc_apply_euler_filter
     settings["up_axis"] = addon_props.cbb_csc_up_axis
     settings["bake_animation"] = addon_props.cbb_csc_bake_animation
