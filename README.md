@@ -29,11 +29,13 @@ For a visual introduction watch the youtube video:
 
 To install Cascadeur Bridge, follow these steps:
 
-1. Download the [latest release](https://github.com/arcsikex/cascadeur_bridge/releases/tag/1.0.1) from the **releases** (for Cascadeur 2023.2)
+1. Download the [latest release](https://github.com/arcsikex/cascadeur_bridge/releases/tag/1.0.3) from the **releases** (for Cascadeur 2024.1)
+    > For Cascadeur version **2023.2** use [Cascadeur Bridge 1.0.2](https://github.com/arcsikex/cascadeur_bridge/releases/tag/1.0.2)
+    > 
     > For Cascadeur version **between 2022.3.1 and 2023.1** use [Cascadeur Bridge 1.0.0](https://github.com/arcsikex/cascadeur_bridge/releases/tag/1.0.0)
-
+    > 
     > For **2022.3.1 or older** use [Cascadeur Bridge 0.4.1](https://github.com/arcsikex/cascadeur_bridge/releases/tag/0.4.1)
-2. Open Blender and go to **Edit > Preferences**
+3. Open Blender and go to **Edit > Preferences**
 4. Click on the Add-ons tab, then click the Install button at the top of the window
 5. Select the downloaded zip
 6. Click the **Install Add-on** button, then enable the addon by clicking the checkbox next to its name
