@@ -16,4 +16,5 @@ classes = [
     csc_ops.CBB_OT_start_cascadeur,
     csc_ops.CBB_OT_install_required_files,
     addon_properties.CBB_OT_save_fbx_settings,
+    addon_properties.CBB_OT_reset_fbx_settings,
 ]

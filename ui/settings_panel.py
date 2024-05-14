@@ -18,6 +18,11 @@ class CBB_PT_csc_bridge_settings(PanelBasics, bpy.types.Panel):
             text="Save Settings",
             icon="FAKE_USER_ON",
         )
+        row.operator(
+            "cbb.reset_fbx_settings",
+            text="Reset Settings",
+            icon="FILE_REFRESH",
+        )
         row.separator()
 
 
