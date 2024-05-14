@@ -395,3 +395,21 @@ class CBB_OT_save_fbx_settings(bpy.types.Operator):
             return {"CANCELLED"}
         self.report({"INFO"}, "Settings saved")
         return {"FINISHED"}
+
+
+class CBB_OT_reset_fbx_settings(bpy.types.Operator):
+    """Reset fbx import and export settings for Cascadeur and Blender"""
+
+    bl_idname = "cbb.reset_fbx_settings"
+    bl_label = "Reset FBX Settings of CSC Bridge"
+
+    def execute(self, context):
+        try:
+            config_handling.reset_fbx_settings()
+            # Update UI panel
+            bpy.context.area.tag_redraw()
+        except Exception as e:
+            self.report({"ERROR", f"Couldn't save settings: {e}"})
+            return {"CANCELLED"}
+        self.report({"INFO"}, "Settings reset")
+        return {"FINISHED"}

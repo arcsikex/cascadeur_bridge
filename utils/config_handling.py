@@ -105,3 +105,22 @@ def save_fbx_settings() -> None:
 
     with open(config_path, "w") as configfile:
         config.write(configfile)
+
+
+def reset_fbx_settings() -> None:
+    """
+    Remove the FBX Settings section from the config file if it exists
+    """
+    config = get_config()
+    section = "FBX Settings"
+    # Remove FBX Settings section from config file
+    if config.has_section(section):
+        config.remove_section(section)
+        with open(config_path, "w") as config_file:
+            config.write(config_file)
+
+    cbb_props = bpy.context.scene.cbb_fbx_settings
+    # Reset properties to their default values
+    for prop_name, _ in cbb_props.rna_type.properties.items():
+        if prop_name not in ["rna_type", "name"]:
+            cbb_props.property_unset(prop_name)
