@@ -7,6 +7,44 @@ def generate_items(options: list) -> list:
 
 
 class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
+    import_method_items = [
+        (
+            "import_model",
+            "Model import",
+            "Importing fbx without animation data",
+        ),
+        (
+            "import_scene",
+            "Scene import",
+            "Importing fbx with animation data",
+        ),
+        (
+            "import_animation_to_selected_frames",
+            "To selected frames",
+            "Importing animation to the selected frames in Cascadeur",
+        ),
+        (
+            "import_animation_to_selected_objects",
+            "To selected objects",
+            "Importing animation to the selected objects in Cascadeur",
+        ),
+    ]
+
+    export_method_items = []  # TODO
+
+    # Cascadeur Import settings
+    cbb_csc_import_method: bpy.props.EnumProperty(
+        items=import_method_items,
+        name="Cascadeur Import Method",
+        description="Import method for Cascadeur fbx import",
+        default=config_handling.get_config_parameter(
+            "FBX Settings",
+            "cbb_csc_import_method",
+            str,
+            fallback="import_model",
+        ),
+    )
+
     # Cascadeur Export settings
     cbb_csc_apply_euler_filter: bpy.props.BoolProperty(
         name="Apply Euler Filter",
