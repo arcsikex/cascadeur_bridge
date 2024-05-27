@@ -19,6 +19,7 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
 
     def draw(self, context):
         _ch = CascadeurHandler()
+        addon_props = context.scene.cbb_fbx_settings
         layout = self.layout
         col = layout.column(align=False)
         if not _ch.is_csc_exe_path_valid:
@@ -43,12 +44,15 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
 
         # Blender to Cascadeur
         box = layout.box()
-        col = box.column(align=True)
+        col = box.column()
         row = col.row()
         row.label(text="Blender > Cascadeur")
         row.scale_y = 1.2
-
-        col.operator(
+        row = col.row()
+        row.prop(addon_props, "cbb_csc_import_method")
+        row.scale_y = 1.2
+        row = col.row()
+        row.operator(
             "cbb.export_blender_fbx", text="Export To Cascadeur", icon="EXPORT"
         )
         # Cascadeur to Blender
