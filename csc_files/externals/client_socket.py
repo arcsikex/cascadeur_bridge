@@ -8,7 +8,7 @@ import csc
 class ClientSocket:
     _header = 64
     _host = "localhost"
-    _port = 53169
+    _port = 1234
     _format = "utf-8"
 
     scene = csc.app.get_application().current_scene().domain_scene()
