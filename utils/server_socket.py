@@ -7,7 +7,7 @@ from typing import Any
 class ServerSocket:
     _header = 64
     _host = "localhost"
-    _port = 1234
+    _port = 2121
     _format = "utf-8"
 
     def __init__(self):
