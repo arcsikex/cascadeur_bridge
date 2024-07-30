@@ -50,8 +50,6 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         row.scale_y = 1.2
         row = col.row()
         row.prop(addon_props, "cbb_import_methods")
-        row = col.row()
-        row.prop(addon_props, "cbb_csc_import_method")
         row.scale_y = 1.2
         row = col.row()
         row.operator(
@@ -64,7 +62,7 @@ class CBB_PT_parent_panel(PanelBasics, bpy.types.Panel):
         row.label(text="Cascadeur > Blender")
         row.scale_y = 1.2
         row = col.row()
-        row.prop(addon_props, "cbb_import_methods")
+        row.prop(addon_props, "cbb_export_methods")
         props = col.operator(
             "cbb.import_cascadeur_action",
             text="Import Action",
