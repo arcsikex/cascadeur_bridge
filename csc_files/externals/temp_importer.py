@@ -22,10 +22,11 @@ def run(scene):
     except Exception as e:
         scene.error(f"Couldn't create socket. Error: {e}")
         return
-    file_path = client.receive_message()
-    # TODO: Get import method from message
-    # TODO: Get import method of fbx scene loader
-    fbx_scene_loader.import_model(file_path)
+    message: dict = client.receive_message()
+    file_path = message.get("file_path")
+
+    import_method = getattr(fbx_scene_loader, message.get("import_method"))
+    import_method(file_path)
     scene.info(f"File imported from {file_path}")
     client.send_message("SUCCESS")
     client.close()

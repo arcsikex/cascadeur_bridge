@@ -17,7 +17,7 @@ def run(scene):
         scene.error(f"Couldn't create socket. Error: {e}")
         return
     settings_dict = client.receive_message()
-    # TODO: Get export method from message
+    method_name = settings_dict.get("export_method", "export_all_objects")
     export_paths = []
 
     for s in scenes:
@@ -29,8 +29,8 @@ def run(scene):
         )
         export_path = commons.get_export_path(s.name())
         fbx_scene_loader.set_settings(commons.set_export_settings(settings_dict))
-        # TODO: Get export method of fbx scene loader
-        fbx_scene_loader.export_all_objects(export_path)
+        export_method = getattr(fbx_scene_loader, method_name)
+        export_method(export_path)
         export_paths.append(export_path)
         scene.info(f"File exported to {export_path}")
 
