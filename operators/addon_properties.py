@@ -7,45 +7,18 @@ def generate_items(options: list) -> list:
 
 
 class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
-    import_method_items = [
-        (
-            "import_model",
-            "Model import",
-            "Importing fbx without animation data",
-        ),
-        (
-            "import_scene",
-            "Scene import",
-            "Importing fbx with animation data",
-        ),
-        (
-            "import_animation_to_selected_frames",
-            "To selected frames",
-            "Importing animation to the selected frames in Cascadeur",
-        ),
-        (
-            "import_animation_to_selected_objects",
-            "To selected objects",
-            "Importing animation to the selected objects in Cascadeur",
-        ),
-    ]
-
-    export_method_items = []  # TODO
-
-    # Cascadeur Import settings
-    cbb_csc_import_method: bpy.props.EnumProperty(
-        items=import_method_items,
-        name="Cascadeur Import Method",
-        description="Import method for Cascadeur fbx import",
+    # Cascadeur Export settings
+    cbb_csc_import_selected: bpy.props.BoolProperty(
+        name="Selected Interval",
+        description="Import selected interval only",
         default=config_handling.get_config_parameter(
             "FBX Settings",
-            "cbb_csc_import_method",
-            str,
-            fallback="import_model",
+            "cbb_csc_import_selected",
+            bool,
+            fallback=False,
         ),
     )
 
-    # Cascadeur Export settings
     cbb_csc_apply_euler_filter: bpy.props.BoolProperty(
         name="Apply Euler Filter",
         description="Automatically set objects' rotations to lowes possible values",
@@ -393,26 +366,64 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
         ),
     )
 
+    cbb_export_methods: bpy.props.EnumProperty(
+        name="Cascadeur Export Method",
+        items=(
+            ("export_all_objects", "Export All Objects", ""),
+            ("export_joints", "Animation", ""),
+            ("export_joints_selected", "Animation - selected joints and frames", ""),
+            ("export_joints_selected_frames", "Animation - selected frames", ""),
+            ("export_joints_selected_objects", "Animation - selected joints", ""),
+            ("export_model", "Model", ""),
+            ("export_scene_selected", "Scene - selected objects and frames", ""),
+            ("export_scene_selected_frames", "Scene - selected frames", ""),
+            ("export_scene_selected_objects", "Scene - selected objects", ""),
+        ),
+        description="Method to use when exporting from Cascadeur",
+        default=config_handling.get_config_parameter(
+            "FBX Settings",
+            "cbb_export_methods",
+            set,
+            fallback={"export_all_objects"},
+        ),
+    )  # type: ignore
 
-def register_props() -> None:
+    cbb_import_methods: bpy.props.EnumProperty(
+        name="Cascadeur Export Method",
+        items=(
+            ("add_model", "Add Model", ""),
+            ("add_model_to_selected", "Add Model to Selected", ""),
+            ("import_animation", "Animation", ""),
+            ("import_animation_to_selected_frames", "Animation - selected frames", ""),
+            ("import_animation_to_selected_objects", "Animation - selected joints", ""),
+            ("import_model", "Model", ""),
+            ("import_scene", "Scene", ""),
+        ),
+        description="Method to use when exporting from Cascadeur",
+        default=config_handling.get_config_parameter(
+            "FBX Settings",
+            "cbb_import_methods",
+            set,
+            fallback={"import_model"},
+        ),
+    )  # type: ignore
+
+
+def register_props():
     bpy.utils.register_class(CBB_PG_fbx_settings)
     bpy.types.Scene.cbb_fbx_settings = bpy.props.PointerProperty(
         type=CBB_PG_fbx_settings
     )
 
 
-def unregister_props() -> None:
+def unregister_props():
     bpy.utils.unregister_class(CBB_PG_fbx_settings)
 
 
 def get_csc_export_settings() -> dict:
-    """
-    Collect Cascadeur FBX export settings in a dictionary.
-
-    :return dict: Cascadeur FBX export settings
-    """
     settings = {}
     addon_props = bpy.context.scene.cbb_fbx_settings
+    settings["selected_interval"] = addon_props.cbb_csc_import_selected
     settings["euler_filter"] = addon_props.cbb_csc_apply_euler_filter
     settings["up_axis"] = addon_props.cbb_csc_up_axis
     settings["bake_animation"] = addon_props.cbb_csc_bake_animation

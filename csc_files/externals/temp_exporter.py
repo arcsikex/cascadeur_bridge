@@ -25,6 +25,7 @@ def run(scene):
         return
 
     settings_dict = client.receive_message()
+    # TODO: Get export method from message
     fbx_scene_loader.set_settings(commons.set_export_settings(settings_dict))
     fbx_scene_loader.export_all_objects(export_path)
     scene.info(f"File exported to {export_path}")
