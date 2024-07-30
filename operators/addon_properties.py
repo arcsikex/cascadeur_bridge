@@ -383,8 +383,8 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
         default=config_handling.get_config_parameter(
             "FBX Settings",
             "cbb_export_methods",
-            set,
-            fallback={"export_all_objects"},
+            str,
+            fallback="export_all_objects",
         ),
     )  # type: ignore
 
@@ -403,8 +403,8 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
         default=config_handling.get_config_parameter(
             "FBX Settings",
             "cbb_import_methods",
-            set,
-            fallback={"import_model"},
+            str,
+            fallback="import_model",
         ),
     )  # type: ignore
 
@@ -427,6 +427,7 @@ def get_csc_export_settings() -> dict:
     settings["euler_filter"] = addon_props.cbb_csc_apply_euler_filter
     settings["up_axis"] = addon_props.cbb_csc_up_axis
     settings["bake_animation"] = addon_props.cbb_csc_bake_animation
+    settings["export_method"] = addon_props.cbb_export_methods
     return settings
 
 

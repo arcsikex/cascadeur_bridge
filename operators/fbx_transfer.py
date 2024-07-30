@@ -163,7 +163,13 @@ class CBB_OT_export_blender_fbx(OperatorBaseClass):
         self.server_socket.run()
 
         if self.server_socket.client_socket:
-            self.server_socket.send_message(self.file_path)
+            addon_props = bpy.context.scene.cbb_fbx_settings
+            import_method_name = addon_props.cbb_import_methods
+            message = {
+                "file_path": self.file_path,
+                "import_method": import_method_name,
+            }
+            self.server_socket.send_message(message)
             response = self.server_socket.receive_message()
             if response == "SUCCESS":
                 print("File successfully imported to Cascadeur.")
