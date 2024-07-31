@@ -1,14 +1,18 @@
 import socket
 import json
 from typing import Any
+import configparser
 
 import csc
+
+config = configparser.ConfigParser()
+config.read("settings.cfg")
 
 
 class ClientSocket:
     _header = 64
     _host = "localhost"
-    _port = 53169
+    _port = config.getint("Addon Settings", "port", fallback=53145)
     _format = "utf-8"
 
     scene = csc.app.get_application().current_scene().domain_scene()

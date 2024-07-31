@@ -2,12 +2,15 @@ import socket
 import select
 import json
 from typing import Any
+from . import config_handling
 
 
 class ServerSocket:
     _header = 64
     _host = "localhost"
-    _port = 53169
+    _port = config_handling.get_config_parameter(
+        "Addon Settings", "port", fallback=53145, data_type=int
+    )
     _format = "utf-8"
 
     def __init__(self):
