@@ -408,6 +408,19 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
         ),
     )  # type: ignore
 
+    cbb_port: bpy.props.IntProperty(
+        name="Port",
+        description="Port number used for communicating with Cascadeur",
+        default=config_handling.get_config_parameter(
+            "Addon Settings",
+            "port",
+            int,
+            fallback=53145,
+        ),
+        min=0,
+        max=65535,
+    )
+
 
 def register_props():
     bpy.utils.register_class(CBB_PG_fbx_settings)
@@ -462,4 +475,23 @@ class CBB_OT_reset_fbx_settings(bpy.types.Operator):
             self.report({"ERROR", f"Couldn't save settings: {e}"})
             return {"CANCELLED"}
         self.report({"INFO"}, "Settings reset")
+        return {"FINISHED"}
+
+
+class CBB_OT_save_port_number(bpy.types.Operator):
+    """Save port settings for Cascadeur and Blender"""
+
+    bl_idname = "cbb.save_port_settings"
+    bl_label = "Save Port"
+
+    def execute(self, context):
+        result = config_handling.save_port_number()
+
+        if not result:
+            self.report(
+                {"ERROR"}, "You don't have permission to write the config file."
+            )
+            self.report({"INFO"}, "Restart Blender as Admin and try again")
+            return {"CANCELLED"}
+        self.report({"INFO"}, "Settings saved")
         return {"FINISHED"}

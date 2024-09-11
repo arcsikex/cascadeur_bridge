@@ -2,11 +2,14 @@ import socket
 import json
 from typing import Any
 import configparser
+import os
 
 import csc
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(script_dir, "settings.cfg")
 config = configparser.ConfigParser()
-config.read("settings.cfg")
+config.read(config_path)
 
 
 class ClientSocket:

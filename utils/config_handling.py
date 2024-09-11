@@ -3,6 +3,7 @@ import bpy
 import os
 import configparser
 from typing import Any
+from .csc_handling import CascadeurHandler
 
 config_path = os.path.join(os.path.dirname(__file__), "..", "settings.cfg")
 
@@ -100,6 +101,8 @@ def save_fbx_settings() -> None:
     my_group = bpy.context.scene.cbb_fbx_settings
 
     for attr_name, _ in my_group.rna_type.properties.items():
+        if attr_name == "cbb_port":
+            continue
         if attr_name not in ["rna_type", "name"]:
             config.set(section, attr_name, str(getattr(my_group, attr_name)))
 
@@ -124,3 +127,28 @@ def reset_fbx_settings() -> None:
     for prop_name, _ in cbb_props.rna_type.properties.items():
         if prop_name not in ["rna_type", "name"]:
             cbb_props.property_unset(prop_name)
+
+
+def save_port_number() -> bool:
+    section = "Addon Settings"
+    addon_props = bpy.context.scene.cbb_fbx_settings
+    port_number = addon_props.cbb_port
+
+    # Cascadeur config
+    ch = CascadeurHandler()
+    commands_path = os.path.join(ch.commands_path, "externals", "settings.cfg")
+    csc_config = configparser.ConfigParser()
+    csc_config.read(commands_path)
+    csc_config.set(section, "port", str(port_number))
+    try:
+        with open(commands_path, "w") as configfile:
+            csc_config.write(configfile)
+    except PermissionError as e:
+        return False
+    # Blender config
+    config = get_config()
+    if not config.has_section(section):
+        config.add_section(section)
+
+    set_config_parameter(section, "port", str(port_number))
+    return True
