@@ -17,5 +17,6 @@ classes = [
     settings_panel.CBB_PT_csc_export_settings,
     settings_panel.CBB_PT_blender_import_settings,
     settings_panel.CBB_PT_blender_export_settings,
+    settings_panel.CBB_PT_advanced_settings,
     socials.CBB_PT_csc_bridge_info,
 ]
