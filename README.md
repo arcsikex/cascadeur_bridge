@@ -11,15 +11,14 @@ For a visual introduction watch the youtube video:
 - [Usage](#usage)
 - [Remove the addon](#remove-the-addon)
 - [Possible issues](#possible-issues)
-- [Future plans](#future-plans)
 
 ## Features
 
 ![Cascadeur Bridge UI](/doc/addon_side_panel.png)
 
 - Start Cascadeur from Blender
-- Export scene from Blender to Cascadeur
-- Import whole scene from Cascadeur
+- Export from Blender to Cascadeur (Model, Scene, Animation)
+- Import from Cascadeur to Blender (Model, Scene, Animation)
 - Import animation to selected armature
 - Batch import all opened scenes and actions from Cascadeur
 - Configure Cascadeur FBX export settings
@@ -56,7 +55,6 @@ The addon can be accessed from the N panel of the 3D Viewport in Blender.
 - **Cascadeur Export Settings and Blender Import/Export Settings:** The default settings are optimized for typical use, but you might need different settings based on your specific requirements. Adjust the usual Blender FBX export/import settings and the Cascadeur FBX export settings here. Once you find the settings that work for you, remember to click the Save Settings button.
 
 
-
 ## Remove the addon
 
 To remove the addon 
@@ -65,18 +63,16 @@ To remove the addon
     - go to your commands folder (*CASCADEUR PATH\resources\scripts\python\commands*) and delete the ***externals*** folder. 
 
 ## Possible issues
-1. **Wrong rotation/scale** of your mesh in Blender/Cascadeur
+1. "No connection could be made because the target machine actively refused it"
+    - Try to change the port in the Settings > Advanced section on the N panel.
+    - If the addon worked previously, but suddenly stopped working with this error, restarting your computer can likely solve the issue.
+2. **Wrong rotation/scale** of your mesh in Blender/Cascadeur
     - Make sure that the transform values (especially rotation and scale) of your objects are applied in Blender
     - Change the export/import settings to apply the correct orientation/scale
-2. **Permission Denied error** when trying to execute function from Blender
+3. **Permission Denied error** when trying to execute function from Blender
     - **Solution:** Give execute permission to your Cascadeur install folder
-3. **Cascadeur crashes**
+4. **Cascadeur crashes**
     - **Solution:** Stop Cascadeur process from the Task Manager. Please create an [Issues](https://github.com/arcsikex/cascadeur_bridge/issues) and attach Cascadeur logs to know why the crash happened.
-
-## Future plans
-- Bind textures automatically in Cascaduer
-- Set up camera in Cascadeur (to match with Blender)
-- Export action from Blender
 
 If you have more idea/request or you found a bug please report it in the **[Issues](https://github.com/arcsikex/cascadeur_bridge/issues)**.
 
