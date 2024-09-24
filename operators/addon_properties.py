@@ -389,7 +389,7 @@ class CBB_PG_fbx_settings(bpy.types.PropertyGroup):
     )  # type: ignore
 
     cbb_import_methods: bpy.props.EnumProperty(
-        name="Cascadeur Export Method",
+        name="Cascadeur Import Method",
         items=(
             ("add_model", "Add Model", ""),
             ("add_model_to_selected", "Add Model to Selected", ""),
