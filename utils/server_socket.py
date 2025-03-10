@@ -8,12 +8,13 @@ from . import config_handling
 class ServerSocket:
     _header = 64
     _host = "localhost"
-    _port = config_handling.get_config_parameter(
-        "Addon Settings", "port", fallback=53145, data_type=int
-    )
     _format = "utf-8"
 
     def __init__(self):
+        self._port = config_handling.get_config_parameter(
+            "Addon Settings", "port", fallback=53145, data_type=int
+        )
+
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self._host, self._port))

@@ -15,12 +15,12 @@ config.read(config_path)
 class ClientSocket:
     _header = 64
     _host = "localhost"
-    _port = config.getint("Addon Settings", "port", fallback=53145)
     _format = "utf-8"
 
     scene = csc.app.get_application().current_scene().domain_scene()
 
     def __init__(self):
+        self._port = config.getint("Addon Settings", "port", fallback=53145)
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((self._host, self._port))
 
