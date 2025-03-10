@@ -172,7 +172,7 @@ class CBB_OT_export_blender_fbx(OperatorBaseClass):
             self.server_socket.send_message(message)
             response = self.server_socket.receive_message()
             if response == "SUCCESS":
-                print("File successfully imported to Cascadeur.")
+                print("[CSC Bridge] File successfully imported to Cascadeur.")
                 file_handling.delete_file(self.file_path)
                 self.report({"INFO"}, "Finished")
                 return {"FINISHED"}
@@ -219,7 +219,7 @@ class CBB_OT_import_cascadeur_fbx(OperatorBaseClass):
             self.server_socket.send_message(get_csc_export_settings())
             data = self.server_socket.receive_message()
             if data:
-                print(str(data))
+                print("[CSC Bridge] ", str(data))
                 if not isinstance(data, list):
                     self.report({"ERROR"}, f"Unexpected response: {str(data)}")
                     addon_info.operation_completed = True
@@ -276,7 +276,7 @@ class CBB_OT_import_action_to_selected(OperatorBaseClass):
             self.server_socket.send_message(get_csc_export_settings())
             data = self.server_socket.receive_message()
             if data:
-                print(str(data))
+                print("[CSC Bridge] ", str(data))
                 if not isinstance(data, list):
                     self.report({"ERROR"}, f"Unexpected response: {str(data)}")
                     addon_info.operation_completed = True

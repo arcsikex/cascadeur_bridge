@@ -149,6 +149,19 @@ def save_port_number() -> bool:
     config = get_config()
     if not config.has_section(section):
         config.add_section(section)
+    # Cascadeur config in the csc_files folder
+    # In case the required files for Cascadeur will be copied again
+    temp_config_path = os.path.join(
+        os.path.dirname(__file__), "..", "csc_files", "externals", "settings.cfg"
+    )
+    temp_config = configparser.ConfigParser()
+    temp_config.read(temp_config_path)
+    temp_config.set(section, "port", str(port_number))
+    try:
+        with open(temp_config_path, "w") as configfile:
+            temp_config.write(configfile)
+    except PermissionError as e:
+        return False
 
     set_config_parameter(section, "port", str(port_number))
     return True

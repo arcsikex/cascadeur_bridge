@@ -23,9 +23,9 @@ def delete_file(file_path: str) -> None:
     """
     if file_exists(file_path):
         os.remove(file_path)
-        print(f"{file_path} has been deleted.")
+        print(f"[CSC Bridge] {file_path} has been deleted.")
     else:
-        print(f"{file_path} does not exist.")
+        print(f"[CSC Bridge] {file_path} does not exist.")
 
 
 def get_export_path() -> str:
@@ -56,7 +56,7 @@ def copy_files(
         try:
             os.makedirs(target_folder)
         except PermissionError as e:
-            print(f"Error creating {target_folder}: {e}")
+            print(f"[CSC Bridge] Error creating {target_folder}: {e}")
             return False
 
     for file_name in file_list:
@@ -67,6 +67,6 @@ def copy_files(
         try:
             shutil.copy2(source_path, target_path)
         except PermissionError as e:
-            print(f"Error copying {source_path} to {target_path}: {e}")
+            print(f"[CSC Bridge] Error copying {source_path} to {target_path}: {e}")
             return False
     return True
